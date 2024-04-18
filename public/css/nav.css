@@ -1,0 +1,156 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+}
+
+.content {
+    padding: 20px;
+    display: flex;
+    background-color: #f7f7f6;
+    height: auto;
+}
+
+.container {
+    max-width: 100%;
+    margin: 0 20px;
+}
+
+.menuCon {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.menuCon .navMenu ul {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+}
+
+
+.menuCon .navMenu ul li a {
+    font-size: 18px;
+    color: #c7c7c7;
+    font-weight: bold;
+}
+
+.menuCon .navMenu ul li a:hover{
+    color: #0bf491;
+}
+
+.menuCon label {
+    display: none;
+    cursor: pointer;
+}
+
+#menu {
+    display: none;
+}
+
+.content img {
+    width: 100px;
+}
+
+label svg {
+    width: 30px;
+    height: 30px;
+    color: #f7f7f6;
+} 
+
+@media(max-width:991px){
+    .content{
+        display: block;
+        min-height: 70px;
+    }
+
+    .container {
+        margin: 0;
+    }
+
+    .menuCon {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .menuCon label {
+        display: initial;
+    }
+
+    .menuCon .navMenu {
+        width: auto;
+        position: absolute;
+        top: 97%;
+        left: 0;
+        right: 0;
+        background-color: #212121;
+        z-index: 99999;
+        display: none;
+    }
+
+    .menuCon .navMenu ul {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .menuCon .navMenu ul li {
+        position: relative;
+        float: left;
+        width: 100%;
+    }
+    
+
+    .menuCon .navMenu ul li a {
+        font-size: 18px;
+        padding: 20px;
+        color: #f7f7f6;
+        font-weight: bold;
+        display: block;
+    }
+
+    #menu:checked ~ .navMenu {
+        display: initial;
+    }
+
+}
+
+/* nav,ul {
+    width: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+ul {
+    list-style: none;
+}
+
+nav ul li a {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+    height: 100%;
+    color: #f7f7f6;
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color .3s ease, background-color .3s ease .1s;
+}
+
+nav ul li a:hover {
+    color: #0bf491;
+     background-color: #0bf49335; 
+}*/

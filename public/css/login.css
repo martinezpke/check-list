@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
+
+body {
+    background-color: #f7f7f6;
+    font-family: 'Ubuntu', sans-serif;
+}
+
+header {
+    display: block;
+    height: auto;
+    width: 100%;
+    /* background-color: #212121;
+    border-bottom: 1px solid rgb(79, 77, 77); */
+}
+
+.container-block-1 {
+    position: relative;
+    background: #f7f7f6;
+    height: 94.5vh;
+  }
+
+
+.container-block-1 main {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 94.6vh;
+}
+
+.container-block-1 svg {
+    position: absolute;
+    top: 51.8%;
+}
+
+.sign {
+    width: 300px;
+    background-color: #333;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.sign label {
+    display: block;
+    margin-bottom: 8px;
+    color: #f7f7f6;
+}
+
+.sign input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 16px;
+    border: 1px solid #0bf491;
+    border-radius: 4px;
+}
+
+.sign button {
+    background-color: #0bf491;
+    color: #333;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.sign button:hover {
+    background-color: #0bf493;
+}
+
+#signUp {
+    padding: 9px;
+    margin: 5px;
+    border-bottom: 1px solid #212121;
+    background-color: #f7f7f6;
+    color: #212121;
+    transition: background-color .3s ease;
+}
+
+/* #signUp:hover {
+    padding: 9px;
+    background-color: transparent;
+    border-left: 1px solid #f7f7f6;
+    border-right: 1px solid #f7f7f6;
+    color: #f7f7f6;
+} */
