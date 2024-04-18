@@ -1,7 +1,9 @@
-const jwt = require('jsonwebtoken');
-const config = require('../../config/config')
+/* const jwt = require('jsonwebtoken');
+const config = require('../../config/config') */
+import jwt from 'jsonwebtoken'
+import env from '../../config/env.js';
 
-const SECRET_KEY = config.SECRET_KEY;
+const SECRET_KEY = env.SECRET_KEY;
 
 const verifyToken = (req, res, next) => {
     const token = req.cookies.token || '';
@@ -20,4 +22,4 @@ const verifyToken = (req, res, next) => {
     }
 }
 
-module.exports = verifyToken;
+export default verifyToken;

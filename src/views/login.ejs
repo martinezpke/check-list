@@ -2,15 +2,15 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/login.css" />
-    <link rel="stylesheet" href="css/nav.css">
-    <title>Login - Check-list</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/login.css" />
+  <link rel="stylesheet" href="css/nav.css">
+  <title>Login - Check-list</title>
 </head>
 
 <body>
-    <!-- <header>
+  <!-- <header>
         <div class="content">
           <div class="menuCon container">
             <img src="https://static.platzi.com/media/uploads/thumbnail_logo_platzi_ng_877f62a9f1.png" alt="Logo Demar" />
@@ -34,17 +34,21 @@
         </div>
       </header> -->
 
-    <main>
+  <main>
+      <% if (msg) { %>
+        <p><%= msg %></p>
+      <% } %>
+
         <form class="sign" method="post" action="/sign-in">
-            <label for="username">Usuario:</label>
-            <input type="text" id="username" name="username" required>
+          <label for="username">Usuario:</label>
+          <input type="text" id="username" name="username" required>
 
-            <label for="password">Contraseña:</label>
-            <input type="password" id="password" name="password" required>
+          <label for="password">Contraseña:</label>
+          <input type="password" id="password" name="password" required>
 
-            <button type="submit">Iniciar Sesión</button>
+          <button type="submit">Iniciar Sesión</button>
         </form>
-    </main>
+  </main>
 </body>
 
 <!-- <li><a href="#" id="signUp"></a>Crear Cuenta</li>

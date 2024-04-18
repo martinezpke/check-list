@@ -1,6 +1,6 @@
-import 'dotenv/config'
+import 'dotenv/config';
 
-export const env = {
+const env = {
     NODE_ENV: process.env.NODE_ENV,
     PORT: process.env.PORT,
     STAGE: process.env.STAGE,
@@ -18,4 +18,6 @@ export const env = {
     KEY_TRIPADVISOR: process.env.KEY_TRIPADVISOR,
     HOST_PRODUCTION: process.env.HOST_PRODUCTION,
     LATLONG: process.env.LATLONG
-  }
+};
+
+export default env

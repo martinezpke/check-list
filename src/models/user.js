@@ -1,5 +1,8 @@
-const db = require('../db/connection');
-const encode = require('../utils/encode')
+/* const db = require('../db/connection');
+const encode = require('../utils/encode') */
+
+import db from '../db/connection.js';
+import encode from '../utils/encode.js';
 
 const createUser = async (username, name, lastName, country, email, password) => {
   const [rows] = await db.promise().query('INSERT INTO users (username, name, last_name, country, email, password) VALUES (?, ?, ?, ?, ?, ? )', [username, name, lastName, country, email, password]);
@@ -34,4 +37,4 @@ const validateUser = async (username, password) => {
 
 
 
-module.exports = { createUser, getUserByUsername, validateUser };
+export { createUser, getUserByUsername, validateUser };

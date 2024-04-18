@@ -1,9 +1,13 @@
-const bcrypt = require('bcrypt');
-const config = require("../config/config")
-console.log(config.SALT_ROUNDS)
+/* const bcrypt = require('bcrypt');
+const config = require("../config/config") */
+import bcrypt from 'bcrypt'
+import env from '../config/env.js'
+
+console.log(env.SALT_ROUNDS)
+
 const encrypt = async (pass) => {
     // decidimos el numero de rondas de hasting
-    const saltRounds = config.SALT_ROUNDS | 10;
+    const saltRounds = env.SALT_ROUNDS | 10;
     const salt = await bcrypt.genSalt(saltRounds);
     const hashedPassword = await bcrypt.hash(pass, salt);
 
@@ -15,4 +19,4 @@ const compare = async (passForm, passDB) => {
     return passMatches;
 }
 
-module.exports = { encrypt, compare }
+export default { encrypt, compare };

@@ -1,8 +1,11 @@
-const jwt = require('jsonwebtoken');
-const config = require('../../config/config')
+/* const jwt = require('jsonwebtoken');
+const config = require('../../config/config') */
 
-const SECRET_KEY = config.SECRET_KEY;
-const TIME_TOKEN = Number(config.TIME_TOKEN);
+import jwt from 'jsonwebtoken'
+import env from '../../config/env.js';
+
+const SECRET_KEY = env.SECRET_KEY;
+const TIME_TOKEN = Number(env.TIME_TOKEN);
 
 const generateToken = (res, id, username )=>{
     const expiration = TIME_TOKEN;
@@ -17,4 +20,4 @@ const generateToken = (res, id, username )=>{
     }).redirect('/courses');
 }
 
-module.exports = generateToken;
+export default generateToken;

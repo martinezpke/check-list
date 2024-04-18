@@ -4,7 +4,7 @@ import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import cookieParser from 'cookie-parser';
 import router from './router/index.js'
-import { env } from './config/env.js';
+import env from './config/env.js';
 
 // Obtener el directorio actual
 const __filename = fileURLToPath(import.meta.url);

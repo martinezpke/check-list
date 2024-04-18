@@ -1,5 +1,5 @@
 import mysql from 'mysql2'
-import { env } from '../config/env';
+import env from '../config/env.js';
 
 console.log(env.DB_HOST)
 
@@ -12,4 +12,4 @@ const connection = mysql.createConnection({
   insecureAuth: true,
 });
 
-module.exports = connection;
+export default connection;
