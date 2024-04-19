@@ -17,7 +17,7 @@ const generateToken = (res, id, username )=>{
         expires: new Date(Date.now() + expiration),
         secure: false, // set to true if your using https
         httpOnly: true,
-    }).redirect('/courses');
+    }).redirect('/config');
 }
 
 export default generateToken;
