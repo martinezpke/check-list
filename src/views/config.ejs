@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/config.css">
+    <title>Admin</title>
+</head>
+
+<body>
+    <div class="wrapper__config__option">
+        <h1>Bienvenido <%= user.nombre %> <%= user.apellido %></h1>
+        <div class="container__option">
+            <a href="#" id="mostrarFormulario">Registrar Clientes</a>
+            <a href="#" target="_blank" rel="noopener noreferrer">Administrar Clientes</a>
+        </div>
+    </div>
+    <div class="registre__client" id="formularioRegistro">
+        <span class="close-form" onclick="cerrarFormulario()">×</span>
+        <form class="form-group" action="/clienteCreate" method="post">
+            <input type="number" name="id" id="id" value="<%= user.id %>" hidden>
+            <div>
+                <label for="nombre">Nombre:</label>
+                <input type="text" name="nombre" id="nombre" />
+            </div>
+            <div>
+                <label for="email">Correo electrónico:</label>
+                <input type="email" name="email" id="email" />
+            </div>
+            <div>
+                <label for="nit">NIT:</label>
+                <input type="number" name="nit" id="nit" />
+            </div>
+            <div>
+                <label for="cel">Número de celular:</label>
+                <input type="tel" name="cel" id="cel" />
+            </div>
+
+            <div class="selected-options">
+                <!-- <div class="option" id="option-1" style="display: none;">
+                    Inspección salida de vehículos y liquidación en la caja, Glp en tránsito autorizado por operaciones.
+                    <span class="close" onclick="removeOption('option-1')">x</span>
+                </div> -->
+                <!-- Agrega más opciones seleccionadas según sea necesario -->
+            </div>
+            <input type="text" class="input__select" id="selectedChecklists" readonly onclick="showChecklistOptions()" placeholder="Elije las opciones">
+
+            <div id="checklistOptions" style="display: none;">
+                <div class="option__check">
+                    <input type="checkbox" id="checklist-1" name="checklists[]" value="1"
+                        onchange="updateSelectedChecklists(this)">
+                    <label class="" for="checklist-1">Inspección salida de vehículos y liquidación en la caja, Glp en
+                        tránsito autorizado por operaciones.</label>
+                </div>
+
+                <div class="option__check">
+                    <input type="checkbox" id="checklist-2" name="checklists[]" value="2"
+                        onchange="updateSelectedChecklists(this)">
+                    <label for="checklist-2">Aqueos de Caja General</label>
+                </div>
+
+                <div class="option__check">
+                    <input type="checkbox" id="checklist-3" name="checklists[]" value="3"
+                        onchange="updateSelectedChecklists(this)">
+                    <label for="checklist-3">Aqueos de Caja Menor</label>
+                </div>
+                <div class="option__check">
+                    <input type="checkbox" id="checklist-4" name="checklists[]" value="4"
+                        onchange="updateSelectedChecklists(this)">
+                    <label for="checklist-4">Validación cierre diario físicos de facturación.</label>
+                </div>
+                <div class="option__check">
+                    <input type="checkbox" id="checklist-5" name="checklists[]" value="5"
+                        onchange="updateSelectedChecklists(this)">
+                    <label for="checklist-5">Validación cierre diario físicos de facturación.</label>
+                </div>
+
+
+
+
+            </div>
+
+            <button type="submit">Registrar cliente</button>
+        </form>
+    </div>
+
+    <script>
+        // Función para cerrar el formulario
+        function cerrarFormulario() {
+            var formularioRegistro = document.getElementById('formularioRegistro');
+            var overlay = document.getElementById('overlay');
+            formularioRegistro.style.display = 'none';
+            overlay.style.display = 'none';
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var enlaceRegistrarClientes = document.getElementById('mostrarFormulario');
+            var formularioRegistro = document.getElementById('formularioRegistro');
+            var overlay = document.getElementById('overlay');
+
+            enlaceRegistrarClientes.addEventListener('click', function (event) {
+                event.preventDefault();
+                formularioRegistro.style.display = 'block';
+                overlay.style.display = 'block';
+            });
+        });
+
+
+
+    </script>
+
+    <script>
+        function showChecklistOptions() {
+            var options = document.getElementById("checklistOptions");
+            options.style.display = options.style.display === "block" ? "none" : "block";
+        }
+
+        function updateSelectedChecklists(checkbox) {
+            var selectedChecklists = document.getElementById("selectedChecklists");
+
+            var optionId = "option-" + checkbox.value;
+            var option = document.getElementById(optionId);
+            if (checkbox.checked) {
+                if (!option) {
+                    option = document.createElement("div");
+                    option.className = "option";
+                    option.id = optionId;
+                    option.innerHTML = `<p>${checkbox.nextElementSibling.textContent}</p>` + '<span class="close" onclick="removeOption(\'' + optionId + '\')">x</span>';
+                    selectedChecklists.parentNode.insertBefore(option, selectedChecklists);
+                }
+                option.style.display = "inline-block";
+            } else {
+                if (option) {
+                    option.style.display = "none";
+                }
+            }
+        }
+
+        function removeOption(optionId) {
+            var option = document.getElementById(optionId);
+            option.parentNode.removeChild(option);
+            var checkbox = document.querySelector('input[value="' + optionId.split("-")[1] + '"]');
+            checkbox.checked = false;
+        }
+
+
+    </script>
+</body>
+
+</html>
+<!-- nombre, nit, direccion, contactos, correo -->

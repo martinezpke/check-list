@@ -1,0 +1,124 @@
+*{
+    box-sizing: border-box;
+}
+
+ body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.wrapper__config__option {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.container__option {
+    text-align: center;
+}
+
+.container__option a {
+    display: block;
+    margin-bottom: 10px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.container__option a:hover {
+    background-color: #0056b3;
+}
+
+/*  */
+
+.registre__client {
+    
+    
+    width: 100%;
+    background-color: #fff;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 30px;
+    border-radius: 10px;
+    position: relative;
+}
+
+.close-form {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 24px;
+    color: #ff0000;
+}
+
+/* .registro-form h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+} */
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 20px;
+    gap: 20px;
+}
+
+.form-group label {
+    width: 100%;
+    font-size: 18px;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="tel"],
+.form-group input[type="number"],
+#selectedChecklists {
+    width: 100%;
+    border-radius: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+.input__select {
+    cursor: pointer;
+}
+
+.option__check, .option__check input,
+.option__check label {
+    cursor: pointer;
+}
+
+.registre__client button {
+    padding: 15px 30px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.registre__client button:hover {
+    background-color: #0056b3;
+}
+
+
