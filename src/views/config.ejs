@@ -10,10 +10,13 @@
 
 <body>
     <div class="wrapper__config__option">
-        <h1>Bienvenido <%= user.nombre %> <%= user.apellido %></h1>
+        <h1>Bienvenido <%= user.nombre %>
+                <%= user.apellido %>
+        </h1>
         <div class="container__option">
-            <a href="#" id="mostrarFormulario">Registrar Clientes</a>
-            <a href="#" target="_blank" rel="noopener noreferrer">Administrar Clientes</a>
+            <a id="mostrarFormulario">Registrar Clientes</a>
+            <a id="createTheme">Agregar check</a>
+            <a id="listClients">Listado Clientes</a>
         </div>
     </div>
     <div class="registre__client" id="formularioRegistro">
@@ -44,7 +47,8 @@
                 </div> -->
                 <!-- Agrega más opciones seleccionadas según sea necesario -->
             </div>
-            <input type="text" class="input__select" id="selectedChecklists" readonly onclick="showChecklistOptions()" placeholder="Elije las opciones">
+            <input type="text" class="input__select" id="selectedChecklists" readonly onclick="showChecklistOptions()"
+                placeholder="Elije las opciones">
 
             <div id="checklistOptions" style="display: none;">
                 <div class="option__check">
@@ -75,21 +79,71 @@
                         onchange="updateSelectedChecklists(this)">
                     <label for="checklist-5">Validación cierre diario físicos de facturación.</label>
                 </div>
+            </div>
 
+            
 
+            <button type="submit">Registrar cliente</button>
+        </form>
+    </div>
 
-
+    <div id="formCheck" class="wrapper__check">
+        <h1>Agrega un nuevo Check</h1>
+        
+        <span class="close-form_chekc" onclick="cerrarCheck()">×</span>
+        <form action="/themeCreate" method="post">
+            <div>
+                <label for="name">Titulo del tema</label>
+                <input type="text" name="name" id="name" placeholder="Tema">
+            </div>
+            <div>
+                <div>
+                    <label for="cadenasPreguntas">Pregunta</label>
+                    <p>Separar cada pregunta por coma. para marcar una pregunta como importante marque con <span style="color: red;">*</span></p>
+                </div>
+                <textarea name="cadenasPreguntas" id="cadenasPreguntas" cols="30" rows="10" placeholder="Preguntas"></textarea>
             </div>
 
             <button type="submit">Registrar cliente</button>
         </form>
     </div>
 
+    <div id="wlistClients" class="wrapper__list">
+        <h2>Lista de clientes</h2>
+        <span class="close-form_chekc" onclick="cerrarList()">×</span>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>NIT</th>
+                    <th>Encargado</th>
+                    <th>check</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (clients) { %>
+                    <% clients.forEach(function(client) { %>
+                        <tr>
+                            <td><%= client.nombre %></td>
+                            <td><%= client.nit %></td>
+                            <td><%= client.id_usuario_admin %></td>
+                            <td><a href="/checklist/<%= client.id %>">Empezar</a></td>
+                            <td>
+                                <button>Editar</button>
+                                <button>Eliminar</button>
+                            </td>
+                        </tr>
+                    <% }); %>
+                <% } %>                
+            </tbody>
+        </table>
+    </div>
+
     <script>
         // Función para cerrar el formulario
         function cerrarFormulario() {
             var formularioRegistro = document.getElementById('formularioRegistro');
-            var overlay = document.getElementById('overlay');
             formularioRegistro.style.display = 'none';
             overlay.style.display = 'none';
         }
@@ -97,16 +151,42 @@
         document.addEventListener('DOMContentLoaded', function () {
             var enlaceRegistrarClientes = document.getElementById('mostrarFormulario');
             var formularioRegistro = document.getElementById('formularioRegistro');
-            var overlay = document.getElementById('overlay');
 
             enlaceRegistrarClientes.addEventListener('click', function (event) {
                 event.preventDefault();
                 formularioRegistro.style.display = 'block';
-                overlay.style.display = 'block';
             });
         });
 
+        function cerrarList() {
+            var formularioCheck = document.getElementById('wlistClients');
+            formularioCheck.style.display = 'none';
+        }
 
+        document.addEventListener('DOMContentLoaded', function () {
+            var enlaceRegistrarClientes = document.getElementById('listClients');
+            var formularioList = document.getElementById('wlistClients');
+
+            enlaceRegistrarClientes.addEventListener('click', function (event) {
+                event.preventDefault();
+                formularioList.style.display = 'block';
+            });
+        });
+
+        function cerrarCheck() {
+            var formularioCheck = document.getElementById('formCheck');
+            formularioCheck.style.display = 'none';
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var enlaceRegistrarClientes = document.getElementById('createTheme');
+            var formularioCheck = document.getElementById('formCheck');
+
+            enlaceRegistrarClientes.addEventListener('click', function (event) {
+                event.preventDefault();
+                formularioCheck.style.display = 'block';
+            });
+        });
 
     </script>
 
@@ -143,8 +223,6 @@
             var checkbox = document.querySelector('input[value="' + optionId.split("-")[1] + '"]');
             checkbox.checked = false;
         }
-
-
     </script>
 </body>
 
