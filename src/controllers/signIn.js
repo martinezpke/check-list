@@ -11,11 +11,9 @@ export const signIn = async (req, res) => {
     try {
         const data = await validateUser(username, password);
         if (data === true) {
-            console.log("yes")
             const userData = await getUserByUsername(username);
             await generateToken(res, userData.id, username);
         } else if (data === null) {
-            console.log("no")
             res.render('login', {msg: "Contraseña o usuario incorrectos"});
         }
         
