@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="/css/check.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="wrapper__form__check">
+        <div class="header__check">
+            <div class="row">
+                <img src="/imgs/phto.jpg" alt="">
+                <div class="content__info">
+                    <h1><%= client[0].nombre %></h1>
+                    <div class="info_ask">
+                        <div>
+                            <i class='bx bx-list-ul'></i>
+                            <span>10</span>
+                        </div>
+                        <div>
+                            <i class='bx bx-list-check'></i>
+                            <span>0</span>
+                        </div>
+                        <div>
+                            <i class='bx bxs-building-house'></i>
+                            <span><%= client[0].nit %></span>
+                        </div>
+                    </div>
+                    <p>Responde cada una de las preguntas<span style="color:red">*</span></p>
+                    <div class="calPorContainer">
+                        <div class="calPor">
+                            <span class="percentage">100</span><span>%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="body__check">
+            <div class="title__body">
+                <h2>ASPECTOS DE EVALUACIÓN</h2>
+                <div>
+                    <span>Sí</span>
+                    <span>No</span>
+                </div>
+            </div>
+            <div class="ask_enum">
+                <p style="margin-bottom: 10px;"><span>1. </span>Inspección salida de vehículos y liquidación en la caja, Glp en tránsito autorizado por
+                    operaciones.</p>
+                <div>
+                    <p>Validar que las planillas de operaciones se encuentren correctamente diligenciadas, tanto en los campos que le corresponde al área de operaciones cómo el campo que corresponde a caja, firma sello por parte del cajero o sello de liquidación por buzón si es el caso.</p>
+                    <div>
+                        <input type="radio" name="evaluation_1" id="evaluation_1_yes" value="yes">
+                        <label for="evaluation_1_yes" hidden>Sí</label>
+                        <input type="radio" name="evaluation_1" id="evaluation_1_no" value="no">
+                        <label for="evaluation_1_no" hidden>No</label>
+                    </div>
+                </div>
+
+            </div>
+        </div> -->
+        <div class="wrapper__form__check">
+            <div class="body__check">
+                <div class="title__body">
+                    <h2>ASPECTOS DE EVALUACIÓN</h2>
+                    <div>
+                        <span>Sí</span>
+                        <span>No</span>
+                    </div>
+                </div>
+                <div class="ask_enum">
+                    <% Object.entries(checkListData).forEach(([checklistNombre, checklistInfo])=> { %>
+                        <p style="margin: 20px 0;">
+                            <%= checklistNombre %>
+                        </p>
+                        <% checklistInfo.preguntas.forEach((pregunta)=> { %>
+                            <div>
+                                <p style="margin-bottom: 10px;">
+                                    <span>
+                                        <%= pregunta.id %>.
+                                    </span>
+                                    <%= pregunta.pregunta %>
+                                </p>
+                                <div>
+                                    <input type="radio" name="evaluation_<%= pregunta.id %>"
+                                        id="evaluation_<%= pregunta.id %>_yes" value="yes">
+                                    <label for="evaluation_<%= pregunta.id %>_yes" hidden>Sí</label>
+                                    <input type="radio" name="evaluation_<%= pregunta.id %>"
+                                        id="evaluation_<%= pregunta.id %>_no" value="no">
+                                    <label for="evaluation_<%= pregunta.id %>_no" hidden>No</label>
+                                </div>
+                            </div>
+                        <% }) %>
+                    <% }) %>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Supongamos que tienes una variable `cumplimiento` que contiene el porcentaje de cumplimiento
+        const cumplimiento = parseInt(document.querySelector('.percentage').textContent);
+
+        // Seleccionamos el elemento de la clase 'calPor'
+        const calPorElement = document.querySelector('.calPor');
+
+        // Aplicamos clases según el rango de cumplimiento
+        if (cumplimiento > 95) {
+            calPorElement.classList.add('cumple-alto');
+        } else if (cumplimiento >= 80 && cumplimiento <= 94) {
+            calPorElement.classList.add('cumple-mejoras');
+        } else {
+            calPorElement.classList.add('no-cumple-critico');
+        }
+
+
+    </script>
+</body>
+
+</html>

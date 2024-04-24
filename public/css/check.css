@@ -1,0 +1,159 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.wrapper__form__check {
+    max-width: 800px;
+    margin: 0px auto;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.wrapper__form__check .header__check {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 30px;
+    height: 300px;
+    background-color: rgb(91, 171, 171);
+}
+
+.wrapper__form__check .header__check .row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+}
+
+.wrapper__form__check .header__check .row img{
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+.wrapper__form__check .header__check .row .content__info {
+    margin-left: 50px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    color: #f8f9fa;
+}
+
+.wrapper__form__check .header__check .row .content__info h1 {
+    font-size: 45px;
+    color: #f8f9fa;
+}
+
+.wrapper__form__check .header__check .row .content__info .info_ask {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.wrapper__form__check .header__check .row .content__info .info_ask div {
+    display: flex;
+    gap: 5px;
+    flex-direction: row;
+    align-items: center;
+    color: #f8f9fa;
+    font-size: 20px;
+}
+
+.wrapper__form__check .header__check .row .content__info .info_ask div span {
+    font-weight: 600;
+}
+
+.wrapper__form__check .header__check .row .content__info .info_ask div i {
+    font-size: 15px;
+}
+
+.calPorContainer {
+    display: inline-block; /* Para que se ajuste al contenido */
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+}
+
+.calPor {
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+}
+
+.calPor .percentage {
+    margin-right: 5px;
+}
+
+.cumple-alto {
+    color: green;
+    font-weight: bold;
+}
+
+.cumple-mejoras {
+    color: orange;
+    font-weight: bold;
+}
+
+.no-cumple-critico {
+    color: red;
+    font-weight: bold;
+}
+
+.body__check {
+    padding: 30px;
+    background-color: #fff;
+}
+
+.body__check .title__body {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.body__check .title__body div {
+    display: flex;
+    flex-direction: row;
+    gap: 50px;
+    font-size: 25px;
+    font-weight: 700;
+
+}
+
+.body__check .ask_enum p {
+    position: relative;
+    width: 80%;
+    font-weight: 600;
+    
+}
+
+.body__check .ask_enum div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.body__check .ask_enum div p {
+    width: 600px;
+    font-weight: 400;
+}
+
+
+.body__check .ask_enum div div{
+    display: flex;
+    flex-direction: row;
+    gap: 50px;
+    
+}
+
+.body__check .ask_enum div input[type="radio"] {
+    width: 25px;
+    cursor: pointer;
+}
