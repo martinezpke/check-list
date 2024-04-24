@@ -1,3 +1,4 @@
+import { query } from 'express';
 import db from '../db/connection.js'
 
 const createClient = async (nombre, nit, id, checklists) => {
@@ -18,13 +19,84 @@ const createClient = async (nombre, nit, id, checklists) => {
     }
 }
 
-const createTheme = async (name, descripcion, idChecklists, preguntas, importancias ) => {
+const getListClient = async () => {
+    try {
+        const [result] = await db.promise().query(
+            `SELECT id, nombre, nit, id_usuario_admin FROM clientes`
+        )
+
+        if (result) {
+            return { success: true, result };
+        } else {
+            return { success: false, message: "No hay temas" };
+        }
+
+    } catch (error) {
+        console.error("Error al buscar:", error);
+        return { success: false, message: error.message };
+    }
+}
+
+const getListThemes = async () => {
+    try {
+        const [result] = await db.promise().query(
+            `SELECT nombre FROM checklists`
+        )
+
+        if (result) {
+            return { success: true, result };
+        } else {
+            return { success: false, message: "No hay temas" };
+        }
+
+    } catch (error) {
+        console.error("Error al buscar:", error);
+        return { success: false, message: error.message };
+    }
+} 
+
+const getCheckList = async (id) => {
+    try {
+        const [resultClient] = await db.promise().query(
+            `SELECT * FROM clientes WHERE id = ?`, [id]
+        );
+
+        if (resultClient.length > 0) {
+            const checklistsValue = resultClient[0].checklists;
+            const checklistsArray = checklistsValue.split(',').map(Number); // Convertir la cadena en un array de números
+            console.log(checklistsArray);
+
+            const [result] = await db.promise().query(
+                `SELECT c.nombre AS checklist_nombre, p.id, p.pregunta
+                FROM checklists c
+                JOIN preguntas p ON c.id = p.id_checklist
+                WHERE c.id IN (?)`, [checklistsArray]
+            );
+
+            if (result.length > 0) {
+                return { success: true, result, resultClient };
+            } else {
+                return { success: false, message: "No hay preguntas asociadas a los checklists proporcionados." };
+            }
+        } else {
+            console.log('No se encontró ningún cliente con ese ID.');
+            return { success: false, message: "No se encontró ningún cliente con ese ID." };
+        }
+
+    } catch (error) {
+        console.error("Error al buscar:", error);
+        return { success: false, message: "Error al buscar: " + error.message };
+    }
+};
+
+
+const createTheme = async (name, preguntas, importancias ) => {
     try {
         // Comenzar una transacción
         await db.promise().beginTransaction();
 
         const [result] = await db.promise().query(
-            `INSERT INTO checklists (name, descripcion) VALUES ( ?, ? )`, [name, descripcion]
+            `INSERT INTO checklists (nombre) VALUES ( ? )`, [name]
         )
 
         const checklistId = result.insertId;
@@ -63,4 +135,6 @@ const createTheme = async (name, descripcion, idChecklists, preguntas, importanc
     }
 }
 
-export { createClient, createTheme }
+
+
+export { createClient, createTheme, getListClient, getCheckList }

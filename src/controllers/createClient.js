@@ -2,10 +2,10 @@ import { createClient } from "../models/client.js";
 
 export const controllersClientCreate = async (req, res) => {
     const { nombre, nit, id , checklists} = req.body;
-    console.log(checklists)
+
     try {
-        const responce = await createClient(nombre, nit, id, checklists)
-        if (responce.success) {
+        const response = await createClient(nombre, nit, id, checklists)
+        if (response.success) {
             console.log("Cliente creado exitosamente")
             res.status(201).json({ msg: 'Cliente creado exitosamente' })
         }
