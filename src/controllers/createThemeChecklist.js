@@ -17,7 +17,7 @@ export const controllerCreateTheme = async (req, res) => {
         const response = await createTheme(name, preguntas, importantes)
         if (response.success){
             console.log("Tema creado exitosamente")
-            res.status(201).res.render('config',{ msg: 'Tema creado exitosamente' })
+            res.render('config',{ msg: 'Tema creado exitosamente' })
         }
     } catch (error) {
         console.error('Error al crear el tema:', error);

@@ -5,186 +5,233 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/config.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <title>Admin</title>
 </head>
 
 <body>
-    <div class="wrapper__config__option">
-        <h1>Bienvenido <%= user.nombre %>
-                <%= user.apellido %>
-        </h1>
-        <div class="container__option">
-            <a id="mostrarFormulario">Registrar Clientes</a>
-            <a id="createTheme">Agregar check</a>
-            <a id="listClients">Listado Clientes</a>
-        </div>
-    </div>
-    <div class="registre__client" id="formularioRegistro">
-        <span class="close-form" onclick="cerrarFormulario()">×</span>
-        <form class="form-group" action="/clienteCreate" method="post">
-            <input type="number" name="id" id="id" value="<%= user.id %>" hidden>
-            <div>
-                <label for="nombre">Nombre:</label>
-                <input type="text" name="nombre" id="nombre" />
-            </div>
-            <div>
-                <label for="email">Correo electrónico:</label>
-                <input type="email" name="email" id="email" />
-            </div>
-            <div>
-                <label for="nit">NIT:</label>
-                <input type="number" name="nit" id="nit" />
-            </div>
-            <div>
-                <label for="cel">Número de celular:</label>
-                <input type="tel" name="cel" id="cel" />
-            </div>
-
-            <div class="selected-options">
-                <!-- <div class="option" id="option-1" style="display: none;">
-                    Inspección salida de vehículos y liquidación en la caja, Glp en tránsito autorizado por operaciones.
-                    <span class="close" onclick="removeOption('option-1')">x</span>
-                </div> -->
-                <!-- Agrega más opciones seleccionadas según sea necesario -->
-            </div>
-            <input type="text" class="input__select" id="selectedChecklists" readonly onclick="showChecklistOptions()"
-                placeholder="Elije las opciones">
-
-            <div id="checklistOptions" style="display: none;">
-                <div class="option__check">
-                    <input type="checkbox" id="checklist-1" name="checklists[]" value="1"
-                        onchange="updateSelectedChecklists(this)">
-                    <label class="" for="checklist-1">Inspección salida de vehículos y liquidación en la caja, Glp en
-                        tránsito autorizado por operaciones.</label>
+    <section class="header__check__list">
+        <div class="wrapper__header__check">
+            <div class="content__header__check">
+                <div class="info__user__check">
+                    <div class="img__photo__header">
+                        <img src="/imgs/phto.jpg" alt="">
+                    </div>
+                    <span>
+                        <%= user.nombre %>
+                            <%= user.apellido %>
+                    </span>
                 </div>
-
-                <div class="option__check">
-                    <input type="checkbox" id="checklist-2" name="checklists[]" value="2"
-                        onchange="updateSelectedChecklists(this)">
-                    <label for="checklist-2">Aqueos de Caja General</label>
-                </div>
-
-                <div class="option__check">
-                    <input type="checkbox" id="checklist-3" name="checklists[]" value="3"
-                        onchange="updateSelectedChecklists(this)">
-                    <label for="checklist-3">Aqueos de Caja Menor</label>
-                </div>
-                <div class="option__check">
-                    <input type="checkbox" id="checklist-4" name="checklists[]" value="4"
-                        onchange="updateSelectedChecklists(this)">
-                    <label for="checklist-4">Validación cierre diario físicos de facturación.</label>
-                </div>
-                <div class="option__check">
-                    <input type="checkbox" id="checklist-5" name="checklists[]" value="5"
-                        onchange="updateSelectedChecklists(this)">
-                    <label for="checklist-5">Validación cierre diario físicos de facturación.</label>
-                </div>
+                <i class='bx bx-chevron-down'></i>
             </div>
 
-            
+            <div class="registre__client" id="formularioRegistro">
+                <span class="close-form" onclick="cerrarFormulario()">×</span>
+                <form class="form-group" action="/clienteCreate" method="post" enctype="multipart/form-data"
+                    onsubmit="return validarFormulario()">
+                    <input type="number" name="id" id="id" value="<%= user.id %>" hidden>
+                    <div>
+                        <label for="nombre">Nombre:</label>
+                        <input type="text" name="nombre" id="nombre" />
+                    </div>
+                    <div>
+                        <label for="email">Correo electrónico:</label>
+                        <input type="email" name="email" id="email" />
+                    </div>
+                    <div>
+                        <label for="nit">NIT:</label>
+                        <input type="number" name="nit" id="nit" />
+                    </div>
+                    <div>
+                        <label for="cel">Número de celular:</label>
+                        <input type="tel" name="cel" id="cel" />
+                    </div>
 
-            <button type="submit">Registrar cliente</button>
-        </form>
-    </div>
+                    <div>
+                        <input type="file" name="fileLogo" id="fileLogo" accept="image/*" required />
+                    </div>
 
-    <div id="formCheck" class="wrapper__check">
-        <h1>Agrega un nuevo Check</h1>
+                    <div class="selected-options">
+                        <!-- <div class="option" id="option-1" style="display: none;">
+                            Inspección salida de vehículos y liquidación en la caja, Glp en tránsito autorizado por operaciones.
+                            <span class="close" onclick="removeOption('option-1')">x</span>
+                        </div> -->
+                        <!-- Agrega más opciones seleccionadas según sea necesario -->
+                    </div>
+                    <input type="text" class="input__select" id="selectedChecklists" readonly
+                        onclick="showChecklistOptions()" placeholder="Elije las opciones" required>
+
+                    <div id="checklistOptions" style="display: none;">
+                        <% if (checks) { %>
+                            <% checks.forEach(function(check) { %>
+                                <div class="option__check">
+                                    <input type="checkbox" id="checklist-<%= check.id %>" name="checklists[]"
+                                        value="<%= check.id %>" onchange="updateSelectedChecklists(this)">
+                                    <label class="" for="checklist-<%= check.id %>">
+                                        <%= check.nombre %>
+                                    </label>
+                                </div>
+                                <% }); %>
+                                    <% } %>
+
+                    </div>
+
+
+
+                    <button type="submit">Registrar cliente</button>
+                </form>
+            </div>
+
+            <div id="formCheck" class="wrapper__check">
+                <h1>Agrega un nuevo Check</h1>
         
-        <span class="close-form_chekc" onclick="cerrarCheck()">×</span>
-        <form action="/themeCreate" method="post">
-            <div>
-                <label for="name">Titulo del tema</label>
-                <input type="text" name="name" id="name" placeholder="Tema">
+                <span class="close-form_chekc" onclick="cerrarCheck()">×</span>
+                <form action="/themeCreate" method="post">
+                    <div>
+                        <label for="name">Titulo del tema</label>
+                        <input type="text" name="name" id="name" placeholder="Tema">
+                    </div>
+                    <div>
+                        <div>
+                            <label for="cadenasPreguntas">Pregunta</label>
+                            <p>Separar cada pregunta por coma. para marcar una pregunta como importante marque con <span
+                                    style="color: red;">*</span></p>
+                        </div>
+                        <textarea name="cadenasPreguntas" id="cadenasPreguntas" cols="30" rows="10"
+                            placeholder="Preguntas"></textarea>
+                    </div>
+        
+                    <button type="submit">Registrar cliente</button>
+                </form>
             </div>
-            <div>
-                <div>
-                    <label for="cadenasPreguntas">Pregunta</label>
-                    <p>Separar cada pregunta por coma. para marcar una pregunta como importante marque con <span style="color: red;">*</span></p>
+
+            <div class="wrapper__option__check" id="option__check__wrapper">
+                <h2>Crear cliente o check</h2>
+                <div class="select__option">
+                    <a id="mostrarFormulario">
+                        <i class='bx bxs-user'></i>
+                        <span>Registrar Clientes</span>
+                    </a>
+                    <a id="createTheme">
+                        <i class='bx bx-spreadsheet'></i>
+                        <span>Agregar check</span>
+                    </a>
                 </div>
-                <textarea name="cadenasPreguntas" id="cadenasPreguntas" cols="30" rows="10" placeholder="Preguntas"></textarea>
             </div>
+        </div>
 
-            <button type="submit">Registrar cliente</button>
-        </form>
-    </div>
-
-    <div id="wlistClients" class="wrapper__list">
-        <h2>Lista de clientes</h2>
-        <span class="close-form_chekc" onclick="cerrarList()">×</span>
-        <table>
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>NIT</th>
-                    <th>Encargado</th>
-                    <th>check</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
+        <div class="wrapper__body__check">
+            <h2>Lista de clientes</h2>
+            <div class="list__check">
                 <% if (clients) { %>
                     <% clients.forEach(function(client) { %>
-                        <tr>
-                            <td><%= client.nombre %></td>
-                            <td><%= client.nit %></td>
-                            <td><%= client.id_usuario_admin %></td>
-                            <td><a href="/checklist/<%= client.id %>">Empezar</a></td>
-                            <td>
-                                <button>Editar</button>
-                                <button>Eliminar</button>
-                            </td>
-                        </tr>
-                    <% }); %>
-                <% } %>                
-            </tbody>
-        </table>
-    </div>
+                        <div class="column__check">
+                            <div><i class='bx bx-spreadsheet'></i></div>
+                            <div><span>
+                                    <%= client.nombre %>
+                                </span></div>
+                            <div><img src="<%= client.image_url %>" alt=""></div>
+
+                            <!-- <td>
+                                            <%= client.nit %>
+                                        </td> -->
+                            <!-- <td>
+                                            <%= client.id_usuario_admin %>
+                                        </td> -->
+                            <div><a href="/checklist/<%= client.id %>">Empezar</a></div>
+                            <!-- <td>
+                                            <button>Editar</button>
+                                            <button>Eliminar</button>
+                                        </td> -->
+                        </div>
+                        <% }); %>
+                            <% } %>
+                                </tbody>
+                                </table>
+            </div>
+        </div>
+
+    </section>
+
+    <script>
+        function validarFormulario() {
+            // Obtener todos los checkboxes con nombre "checklists[]"
+            var checkboxes = document.querySelectorAll('input[name="checklists[]"]');
+            var alMenosUnoSeleccionado = false;
+
+            // Verificar si al menos uno está seleccionado
+            checkboxes.forEach(function (checkbox) {
+                if (checkbox.checked) {
+                    alMenosUnoSeleccionado = true;
+                }
+            });
+
+            // Si al menos uno no está seleccionado, mostrar un mensaje y evitar que se envíe el formulario
+            if (!alMenosUnoSeleccionado) {
+                alert("Por favor, selecciona al menos un elemento de la lista.");
+                return false; // Evita que se envíe el formulario
+            }
+            // Si al menos uno está seleccionado, permitir que el formulario se envíe
+            return true;
+        }
+    </script>
 
     <script>
         // Función para cerrar el formulario
         function cerrarFormulario() {
+            var optionContainer = document.getElementById('option__check__wrapper');
             var formularioRegistro = document.getElementById('formularioRegistro');
             formularioRegistro.style.display = 'none';
-            overlay.style.display = 'none';
+            optionContainer.style.display = 'block'
         }
 
         document.addEventListener('DOMContentLoaded', function () {
             var enlaceRegistrarClientes = document.getElementById('mostrarFormulario');
+            var optionContainer = document.getElementById('option__check__wrapper');
             var formularioRegistro = document.getElementById('formularioRegistro');
 
             enlaceRegistrarClientes.addEventListener('click', function (event) {
                 event.preventDefault();
                 formularioRegistro.style.display = 'block';
+                optionContainer.style.display = 'none'
             });
         });
 
-        function cerrarList() {
+        /*function cerrarList() {
             var formularioCheck = document.getElementById('wlistClients');
+            var formularioRegistro = document.getElementById('formularioRegistro');
             formularioCheck.style.display = 'none';
+            optionContainer.style.display = 'block';
         }
 
         document.addEventListener('DOMContentLoaded', function () {
             var enlaceRegistrarClientes = document.getElementById('listClients');
+            var formularioRegistro = document.getElementById('formularioRegistro');
             var formularioList = document.getElementById('wlistClients');
 
             enlaceRegistrarClientes.addEventListener('click', function (event) {
                 event.preventDefault();
                 formularioList.style.display = 'block';
+                optionContainer.style.display = 'none';
             });
-        });
+        });*/
 
         function cerrarCheck() {
             var formularioCheck = document.getElementById('formCheck');
+            var optionContainer = document.getElementById('option__check__wrapper');
             formularioCheck.style.display = 'none';
+            optionContainer.style.display = 'block';
         }
 
         document.addEventListener('DOMContentLoaded', function () {
             var enlaceRegistrarClientes = document.getElementById('createTheme');
+            var optionContainer = document.getElementById('option__check__wrapper');
             var formularioCheck = document.getElementById('formCheck');
 
             enlaceRegistrarClientes.addEventListener('click', function (event) {
                 event.preventDefault();
                 formularioCheck.style.display = 'block';
+                optionContainer.style.display = 'none';
             });
         });
 

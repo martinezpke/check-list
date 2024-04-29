@@ -1,10 +1,65 @@
 import { query } from 'express';
 import db from '../db/connection.js'
 
-const createClient = async (nombre, nit, id, checklists) => {
+const getIdRating = async ( id ) => {
     try {
         const [result] = await db.promise().query(
-            `INSERT INTO clientes (nombre, nit, id_usuario_admin, checklists) VALUES (?, ?, ?, ?)`, [nombre, nit, id, checklists.join(',')]
+            `SELECT * FROM check_list.rating WHERE id = ?`, [id]
+        )
+
+        if (result) {
+            return { success: true, result };
+        } else {
+            return { success: false, message: "No hay temas" };
+        }
+    } catch (error) {
+        console.error("Error al buscar rating:", error);
+        return { success: false, message: error.message };
+    }
+}
+
+const setRtAw = async (datas) => {
+    try {
+        await db.promise().beginTransaction();
+        const [result] = await db.promise().query(
+            `INSERT INTO rating (id_client, result, status) VALUES (?, ?, ?)`,
+            [datas.idCliente, parseFloat(datas.ValueRating), parseInt(datas.statusForm)]
+        )
+        const ratingId = result.insertId;
+
+        if (ratingId) {
+            for (const key of Object.keys(datas)) {
+                if (key.startsWith('evaluation_')) {
+                    const preguntaId = parseInt(key.split('_')[1]);
+                    const respuestaValue = datas[key] === 'yes' ? 1 : 0;
+                    await db.promise().query(
+                        `INSERT INTO respuestas (id_pregunta, id_rating, respuesta) VALUES (?, ?, ?)`,
+                        [preguntaId, ratingId, respuestaValue]
+                    );
+                }
+            }
+
+            // Confirmar la transacción
+            await db.promise().commit();
+
+            return { success: true, id: ratingId };
+        } else {
+            return { success: false, msg: "Error al guardar el resultado" };
+        }
+    } catch (error) {
+        // Revertir la transacción en caso de error
+        await db.promise().rollback();
+
+        console.error("Error al guardar la pregunta:", error);
+        return { success: false, message: error.message };
+    }
+};
+
+
+const createClient = async (nombre, nit, id, checklists, imgUrls) => {
+    try {
+        const [result] = await db.promise().query(
+            `INSERT INTO clientes (nombre, nit, id_usuario_admin, checklists, image_url) VALUES (?, ?, ?, ?, ?)`, [nombre, nit, id, checklists.join(','), imgUrls]
         );
         // Verificar si se insertó correctamente y obtener el ID del cliente
         const clienteId = result.insertId;
@@ -22,7 +77,7 @@ const createClient = async (nombre, nit, id, checklists) => {
 const getListClient = async () => {
     try {
         const [result] = await db.promise().query(
-            `SELECT id, nombre, nit, id_usuario_admin FROM clientes`
+            `SELECT * FROM clientes`
         )
 
         if (result) {
@@ -37,13 +92,36 @@ const getListClient = async () => {
     }
 }
 
-const getListThemes = async () => {
+const getAllRatingId = async (idClient, idrating) => {
     try {
         const [result] = await db.promise().query(
-            `SELECT nombre FROM checklists`
+            `SELECT respuestas.id, respuestas.id_pregunta, respuestas.respuesta, respuestas.fecha_respondida
+            FROM respuestas
+            JOIN rating ON respuestas.id_rating = rating.id
+            WHERE rating.id_client = ?
+            AND rating.id = ?;`, [idClient, idrating]
         )
 
         if (result) {
+            return { success: true, result };
+        } else {
+            return { success: false, message: "No hay respuesta" };
+        }
+
+    } catch (error) {
+        console.error("Error al buscar:", error);
+        return { success: false, message: error.message };
+    }
+}
+
+const getListThemes = async () => {
+    try {
+        const [result] = await db.promise().query(
+            `SELECT id, nombre FROM checklists`
+        )
+
+        if (result) {
+
             return { success: true, result };
         } else {
             return { success: false, message: "No hay temas" };
@@ -64,10 +142,9 @@ const getCheckList = async (id) => {
         if (resultClient.length > 0) {
             const checklistsValue = resultClient[0].checklists;
             const checklistsArray = checklistsValue.split(',').map(Number); // Convertir la cadena en un array de números
-            console.log(checklistsArray);
 
             const [result] = await db.promise().query(
-                `SELECT c.nombre AS checklist_nombre, p.id, p.pregunta
+                `SELECT c.nombre AS checklist_nombre, p.id, p.pregunta, p.importancia
                 FROM checklists c
                 JOIN preguntas p ON c.id = p.id_checklist
                 WHERE c.id IN (?)`, [checklistsArray]
@@ -137,4 +214,4 @@ const createTheme = async (name, preguntas, importancias ) => {
 
 
 
-export { createClient, createTheme, getListClient, getCheckList }
+export { createClient, createTheme, getListClient, getCheckList, getListThemes, setRtAw, getIdRating, getAllRatingId}

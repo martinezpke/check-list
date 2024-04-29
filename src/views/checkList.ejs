@@ -6,40 +6,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="/css/check.css">
+    <script src="html2pdf.bundle.min.js"></script>
     <title>Document</title>
 </head>
 
 <body>
-    <div class="wrapper__form__check">
-        <div class="header__check">
-            <div class="row">
-                <img src="/imgs/phto.jpg" alt="">
-                <div class="content__info">
-                    <h1><%= client[0].nombre %></h1>
-                    <div class="info_ask">
-                        <div>
-                            <i class='bx bx-list-ul'></i>
-                            <span>10</span>
+    <% if (rating===null) { %>
+        <div class="wrapper__form__check">
+            <div class="header__check">
+                <div class="row">
+                    <img src="<%= client[0].image_url %>" alt="">
+                    <div class="content__info">
+                        <h1>
+                            <%= client[0].nombre %>
+                        </h1>
+                        <div class="info_ask">
+                            <div>
+                                <i class='bx bx-list-ul'></i>
+                                <span>
+                                    <%= Object.values(checkListData).reduce((total, checklist)=> total +
+                                        checklist.preguntas.length, 0) %>
+                                </span>
+                            </div>
+                            <div>
+                                <i class='bx bx-list-check'></i>
+                                <span id="answered_questions_counter">0</span>
+                            </div>
+                            <div>
+                                <i class='bx bxs-building-house'></i>
+                                <span>
+                                    <%= client[0].nit %>
+                                </span>
+                            </div>
                         </div>
-                        <div>
-                            <i class='bx bx-list-check'></i>
-                            <span>0</span>
+                        <p>Responde cada una de las preguntas<span style="color:red">*</span></p>
+                        <div class="calPorContainer">
+                            <div class="calPor">
+                                <span class="percentage" id="percentage">0</span><span>%</span>
+                            </div>
+                            <div id="criticalMessage" style="display: none; color: red;">CRITICO</div>
                         </div>
-                        <div>
-                            <i class='bx bxs-building-house'></i>
-                            <span><%= client[0].nit %></span>
-                        </div>
-                    </div>
-                    <p>Responde cada una de las preguntas<span style="color:red">*</span></p>
-                    <div class="calPorContainer">
-                        <div class="calPor">
-                            <span class="percentage">100</span><span>%</span>
-                        </div>
+
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- <div class="body__check">
+            <!-- <div class="body__check">
             <div class="title__body">
                 <h2>ASPECTOS DE EVALUACIÓN</h2>
                 <div>
@@ -62,63 +73,298 @@
 
             </div>
         </div> -->
-        <div class="wrapper__form__check">
-            <div class="body__check">
-                <div class="title__body">
-                    <h2>ASPECTOS DE EVALUACIÓN</h2>
-                    <div>
-                        <span>Sí</span>
-                        <span>No</span>
-                    </div>
-                </div>
-                <div class="ask_enum">
-                    <% Object.entries(checkListData).forEach(([checklistNombre, checklistInfo])=> { %>
-                        <p style="margin: 20px 0;">
-                            <%= checklistNombre %>
-                        </p>
-                        <% checklistInfo.preguntas.forEach((pregunta)=> { %>
+
+            <div class="wrapper__form__check">
+                <form action="/rating/<%= client[0].id %>" method="post">
+                    <input type="number" name="ValueRating" id="ValueRating" min="0" max="100" step="0.01" value="0"
+                        hidden>
+                    <input type="number" name="statusForm" id="statusForm" min="0" max="1" value="0" hidden>
+                    <input type="number" name="idCliente" value="<%= client[0].id %>" hidden>
+                    <div class="body__check">
+                        <div class="title__body">
+                            <h2>ASPECTOS DE EVALUACIÓN</h2>
                             <div>
-                                <p style="margin-bottom: 10px;">
-                                    <span>
-                                        <%= pregunta.id %>.
-                                    </span>
-                                    <%= pregunta.pregunta %>
-                                </p>
-                                <div>
-                                    <input type="radio" name="evaluation_<%= pregunta.id %>"
-                                        id="evaluation_<%= pregunta.id %>_yes" value="yes">
-                                    <label for="evaluation_<%= pregunta.id %>_yes" hidden>Sí</label>
-                                    <input type="radio" name="evaluation_<%= pregunta.id %>"
-                                        id="evaluation_<%= pregunta.id %>_no" value="no">
-                                    <label for="evaluation_<%= pregunta.id %>_no" hidden>No</label>
-                                </div>
+                                <span>Sí</span>
+                                <span>No</span>
                             </div>
-                        <% }) %>
-                    <% }) %>
-                </div>
+                        </div>
+                        <div class="ask_enum">
+                            <% Object.entries(checkListData).forEach(([checklistNombre, checklistInfo])=> { %>
+                                <p style="margin: 20px 0;">
+                                    <%= checklistNombre %>
+                                </p>
+                                <% checklistInfo.preguntas.forEach((pregunta)=> { %>
+                                    <div style="<%= pregunta.importancia === 1 ? 'background-color: #b8cce4;' : '' %>">
+                                        <p style="margin-bottom: 10px;">
+                                            <span>
+                                                <%= pregunta.id %>.
+                                            </span>
+                                            <%= pregunta.pregunta %>
+                                        </p>
+                                        <div>
+                                            <input type="text" name="idPregunta" value="<%= pregunta.id %>" hidden>
+                                            <input class="<%= pregunta.importancia === 1 ? 'important' : '' %>"
+                                                type="radio" name="evaluation_<%= pregunta.id %>"
+                                                id="evaluation_<%= pregunta.id %>_yes" value="yes" required>
+                                            <label for="evaluation_<%= pregunta.id %>_yes" hidden>Sí</label>
+                                            <input class="<%= pregunta.importancia === 1 ? 'important' : '' %>"
+                                                type="radio" name="evaluation_<%= pregunta.id %>"
+                                                id="evaluation_<%= pregunta.id %>_no" value="no" required>
+                                            <label for="evaluation_<%= pregunta.id %>_no" hidden>No</label>
+                                        </div>
+                                    </div>
+                                    <% }) %>
+                                        <% }) %>
+                        </div>
+                        <button type="submit">Enviar</button>
+                    </div>
+                </form>
             </div>
+
+
         </div>
 
-    </div>
+        <% } else { %>
+            <div class="wrapper__rating" id="contentToDownload">
+                <div class="header__rating">
+                    <h1 style="margin-bottom: 30px;">La calificacion es de: </h1>
+                    <div class="rating">
+                        <%= rating %>%
+                    </div>
+                    <h2>
+                        <%= client[0].nombre %>
+                    </h2>
+                    <span style="margin-top: 20px;"><%= new Date(listRating[0].fecha_respondida).toLocaleString() %></span>
 
-    <script>
-        // Supongamos que tienes una variable `cumplimiento` que contiene el porcentaje de cumplimiento
-        const cumplimiento = parseInt(document.querySelector('.percentage').textContent);
+                </div>
 
-        // Seleccionamos el elemento de la clase 'calPor'
-        const calPorElement = document.querySelector('.calPor');
+                <div class="body_rating">
+                    <p id="parrafRating">a</p>
+                    <div class="container__btn">
+                        <button type="button" id="btnCrearPdf">
+                            Descargar PDF
+                        </button>
+                        <a href="/config">
+                            <button type="button">Listo</button>
+                        </a>
+                    </div>
+                </div>
 
-        // Aplicamos clases según el rango de cumplimiento
-        if (cumplimiento > 95) {
-            calPorElement.classList.add('cumple-alto');
-        } else if (cumplimiento >= 80 && cumplimiento <= 94) {
-            calPorElement.classList.add('cumple-mejoras');
-        } else {
-            calPorElement.classList.add('no-cumple-critico');
-        }
+                <div class="body__check">
+                    <div class="title__body">
+                        <h2>ASPECTOS DE EVALUACIÓN</h2>
+                        <div>
+                            <span>Sí</span>
+                            <span>No</span>
+                        </div>
+                    </div>
+                    <div class="ask_enum">
+                        <% Object.entries(checkListData).forEach(([checklistNombre, checklistInfo]) => { %>
+                            <p style="margin: 20px 0;">
+                                <%= checklistNombre %>
+                            </p>
+                            <% checklistInfo.preguntas.forEach((pregunta) => { %>
+                                <div style="<%= pregunta.importancia === 1 ? 'background-color: #b8cce4;' : '' %>">
+                                    <p style="margin-bottom: 10px;">
+                                        <span>
+                                            <%= pregunta.id %>.
+                                        </span>
+                                        <%= pregunta.pregunta %>
+                                    </p>
+                                    <div>
+                                        <input type="text" name="idPregunta" value="<%= pregunta.id %>" hidden>
+                                        <% const respuesta = listRating.find(respuesta => respuesta.id_pregunta === pregunta.id); %>
+                                        <% if (respuesta) { %>
+                                            <input class="<%= pregunta.importancia === 1 ? 'important' : '' %>"
+                                                type="radio" name="evaluation_<%= pregunta.id %>"
+                                                id="evaluation_<%= pregunta.id %>_yes"
+                                                value="yes" <%= respuesta.respuesta === 1 ? 'checked' : '' %> disabled>
+                                            <label for="evaluation_<%= pregunta.id %>_yes" hidden>Sí</label>
+                                            <input class="<%= pregunta.importancia === 1 ? 'important' : '' %>"
+                                                type="radio" name="evaluation_<%= pregunta.id %>"
+                                                id="evaluation_<%= pregunta.id %>_no"
+                                                value="no" <%= respuesta.respuesta === 0 ? 'checked' : '' %> disabled>
+                                            <label for="evaluation_<%= pregunta.id %>_no" hidden>No</label>
+                                        <% } else { %>
+                                            <!-- Si no hay respuesta, mostrar inputs deshabilitados -->
+                                            <input class="<%= pregunta.importancia === 1 ? 'important' : '' %>"
+                                                type="radio" name="evaluation_<%= pregunta.id %>"
+                                                id="evaluation_<%= pregunta.id %>_yes"
+                                                value="yes" disabled>
+                                            <label for="evaluation_<%= pregunta.id %>_yes" hidden>Sí</label>
+                                            <input class="<%= pregunta.importancia === 1 ? 'important' : '' %>"
+                                                type="radio" name="evaluation_<%= pregunta.id %>"
+                                                id="evaluation_<%= pregunta.id %>_no"
+                                                value="no" disabled>
+                                            <label for="evaluation_<%= pregunta.id %>_no" hidden>No</label>
+                                        <% } %>
+                                    </div>
+                                </div>
+                            <% }) %>
+                        <% }) %>
+                    </div>
+                    
+                </div>
+            </div>
+
+            
+
+            <% } %>
+            
+
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.1/html2pdf.bundle.min.js"></script>
+
+                <script>
+                    // Selecciona el botón y el contenido a convertir a PDF
+                    const downloadPdfButton = document.getElementById('btnCrearPdf');
+                    const contentToDownload = document.getElementById('contentToDownload');
+
+                    // Agrega un evento de clic al botón
+                    downloadPdfButton.addEventListener('click', () => {
+                        // Convierte el contenido a PDF
+                        html2pdf().from(contentToDownload).save();
+                    });
+
+                </script>
+
+                <script>
+                    // Find al rating items
+                    const ratings = document.querySelectorAll(".rating");
+                    const parraf = document.getElementById('parrafRating')
+
+                    // Iterate over all rating items
+                    ratings.forEach((rating) => {
+                        // Get content and get score as a float
+                        const ratingContent = rating.innerHTML;
+                        const ratingScore = parseFloat(ratingContent); // Convertir a float
+
+                        // Define if the score is good, meh or bad according to its value
+                        let scoreClass;
+                        if (ratingScore < 80) {
+                            scoreClass = "bad";
+                            parraf.textContent = "No cumple es crítico menor a 80%: El desempeño no cumple con los estándares requeridos y se considera crítico, con un cumplimiento inferior al 80%.";
+                        } else if (ratingScore >= 80 && ratingScore <= 94) {
+                            scoreClass = "meh";
+                            parraf.textContent = "Cumple con mejoras entre 80% y 94%: El desempeño cumple con los estándares requeridos, aunque hay margen para mejoras, con un cumplimiento entre el 80% y el 94%.";
+                        } else {
+                            scoreClass = "good";
+                            parraf.textContent = "Cumple mayor a 95%: El desempeño cumple con los estándares requeridos, superando el 95% de cumplimiento.";
+                        }
 
 
-    </script>
+                        // Add score class to the rating
+                        rating.classList.add(scoreClass);
+
+                        // After adding the class, get its color
+                        const ratingColor = window.getComputedStyle(rating).backgroundColor;
+
+                        // Define the background gradient according to the score and color
+                        const gradient = `background: conic-gradient(${ratingColor} ${ratingScore}%, transparent 0 100%)`;
+
+                        // Set the gradient as the rating background
+                        rating.setAttribute("style", gradient);
+
+                        // Wrap the content in a tag to show it above the pseudo element that masks the bar
+                        rating.innerHTML = `<span>${ratingScore.toFixed(1)} ${ratingContent.indexOf("%") >= 0 ? "<small>%</small>" : ""
+                            }</span>`; // Ajustar el valor flotante a una precisión de 1 decimal
+                    });
+
+
+                </script>
+
+                <script>
+                    // Agregar event listener a los radios para detectar cambios
+                    const radiosIm = document.querySelectorAll('input[type="radio"]');
+                    radiosIm.forEach(radio => {
+                        radio.addEventListener('change', function () {
+                            const criticalMessage = document.getElementById('criticalMessage');
+
+                            // Verificar si hay alguna pregunta importante marcada como "no"
+                            const importantNo = Array.from(document.querySelectorAll('input[type="radio"].important')).some(radio => radio.checked && radio.value === 'no');
+
+                            if (importantNo) {
+                                document.getElementById('statusForm').value = "1"
+                                criticalMessage.style.display = 'block';
+                            } else {
+                                document.getElementById('statusForm').value = "0"
+                                criticalMessage.style.display = 'none';
+                            }
+
+                            // Llamar a la función para actualizar el contador de preguntas respondidas y el porcentaje
+                            updateAnsweredQuestionsAndPercentage();
+                        });
+                    });
+
+
+                </script>
+
+                <script>
+                    // Función para actualizar el contador de preguntas respondidas y el porcentaje
+                    function updateAnsweredQuestionsAndPercentage() {
+                        const radios = document.querySelectorAll('input[type="radio"]');
+                        let answeredCount = 0;
+
+                        radios.forEach(radio => {
+                            if (radio.checked && radio.value === "yes") {
+                                answeredCount++;
+                            }
+                        });
+
+                        const totalQuestions = radios.length / 2; // Dividido por 2 porque hay dos opciones por pregunta
+                        const percentage = (answeredCount / totalQuestions) * 100;
+
+                        // Actualizar contador de preguntas respondidas
+                        document.getElementById('answered_questions_counter').textContent = answeredCount;
+
+                        // Actualizar porcentaje
+                        document.getElementById('percentage').textContent = percentage.toFixed(2);
+
+                        document.getElementById('ValueRating').value = percentage.toFixed(2);
+
+                        // Aplicar clases según el rango de cumplimiento
+                        const calPorElement = document.querySelector('.calPor');
+                        calPorElement.classList.remove('cumple-alto', 'cumple-mejoras', 'no-cumple-critico');
+                        if (percentage > 94.6) {
+                            calPorElement.classList.add('cumple-alto');
+                        } else if (percentage >= 80 && percentage <= 94.6) {
+                            calPorElement.classList.add('cumple-mejoras');
+                        } else {
+                            calPorElement.classList.add('no-cumple-critico');
+                        }
+                    }
+
+                    // Agregar event listener a los radios para detectar cambios
+                    const radiosE = document.querySelectorAll('input[type="radio"]');
+                    radiosE.forEach(radio => {
+                        radio.addEventListener('change', updateAnsweredQuestionsAndPercentage);
+                    });
+
+                    // Llamar a la función una vez para calcular el porcentaje inicial
+                    updateAnsweredQuestionsAndPercentage();
+
+                </script>
+
+                <script>
+                    // Función para actualizar el contador de preguntas respondidas
+                    function updateAnsweredQuestionsCounter() {
+                        const radios = document.querySelectorAll('input[type="radio"]');
+                        let answeredCount = 0;
+                        radios.forEach(radio => {
+                            if (radio.checked) {
+                                answeredCount++;
+                            }
+                        });
+                        document.getElementById('answered_questions_counter').textContent = answeredCount;
+                    }
+
+                    // Agregar event listener a los radios para detectar cambios
+                    const radios = document.querySelectorAll('input[type="radio"]');
+                    radios.forEach(radio => {
+                        radio.addEventListener('change', updateAnsweredQuestionsCounter);
+                    });
+                </script>
+
+            
 </body>
 
 </html>

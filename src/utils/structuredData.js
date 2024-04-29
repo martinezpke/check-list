@@ -6,12 +6,14 @@ export const structureResponse = (data) => {
             structuredData[item.checklist_nombre] = {
                 id: item.id,
                 preguntas: [],
+                importancias: []
             };
         }
 
         structuredData[item.checklist_nombre].preguntas.push({
             id: item.id,
             pregunta: item.pregunta,
+            importancia: item.importancia
         });
     });
 

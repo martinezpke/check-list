@@ -3,7 +3,7 @@ import { structureResponse } from '../utils/structuredData.js';
 
 export const getAsk = async ( id ) => {
     try {
-        const data = await getCheckList(id.id);
+        const data = await getCheckList(id);
         if (data.success) {
             const structuredData = structureResponse(data.result);
 
