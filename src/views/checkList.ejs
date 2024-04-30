@@ -82,41 +82,52 @@
                     <input type="number" name="idCliente" value="<%= client[0].id %>" hidden>
                     <div class="body__check">
                         <div class="title__body">
-                            <h2>ASPECTOS DE EVALUACIÓN</h2>
-                            <div>
-                                <span>Sí</span>
-                                <span>No</span>
+                            <div class="body__h">
+                                <h2>ASPECTOS DE EVALUACIÓN</h2>
+                            </div>
+                            <div class="infor__title__body">
+                                <span>Fecha: 30/04/2024</span>
+                                <div>
+                                    <span>Sí</span>
+                                    <span>No</span>
+                                </div>
                             </div>
                         </div>
                         <div class="ask_enum">
                             <% Object.entries(checkListData).forEach(([checklistNombre, checklistInfo])=> { %>
-                                <p style="margin: 20px 0;">
-                                    <%= checklistNombre %>
-                                </p>
-                                <% checklistInfo.preguntas.forEach((pregunta)=> { %>
-                                    <div style="<%= pregunta.importancia === 1 ? 'background-color: #b8cce4;' : '' %>">
-                                        <p style="margin-bottom: 10px;">
-                                            <span>
-                                                <%= pregunta.id %>.
-                                            </span>
-                                            <%= pregunta.pregunta %>
-                                        </p>
+                                <div class="content__wrapper__check">
+                                    <p style="text-wrap: balance; display: flex; width: 100%; margin: 20px 0; font-weight: 600;">
+                                        <%= checklistNombre %>
+                                    </p>
+                                    <% checklistInfo.preguntas.forEach((pregunta)=> { %>
                                         <div>
-                                            <input type="text" name="idPregunta" value="<%= pregunta.id %>" hidden>
-                                            <input class="<%= pregunta.importancia === 1 ? 'important' : '' %>"
-                                                type="radio" name="evaluation_<%= pregunta.id %>"
-                                                id="evaluation_<%= pregunta.id %>_yes" value="yes" required>
-                                            <label for="evaluation_<%= pregunta.id %>_yes" hidden>Sí</label>
-                                            <input class="<%= pregunta.importancia === 1 ? 'important' : '' %>"
-                                                type="radio" name="evaluation_<%= pregunta.id %>"
-                                                id="evaluation_<%= pregunta.id %>_no" value="no" required>
-                                            <label for="evaluation_<%= pregunta.id %>_no" hidden>No</label>
+                                            <p style="text-wrap: balance; margin: 20px 0; width: 100%;">
+                                                <!-- <span>
+                                                    <%= pregunta.id %>.
+                                                </span> -->
+                                                
+                                                <span > <%= pregunta.pregunta %><%= pregunta.importancia === 1 ? '*' : '' %> </span>
+                                            </p>
+                                            <div>
+                                                <input type="text" name="idPregunta" value="<%= pregunta.id %>" hidden>
+                                                <input class="<%= pregunta.importancia === 1 ? 'important' : '' %>"
+                                                    type="radio" name="evaluation_<%= pregunta.id %>"
+                                                    id="evaluation_<%= pregunta.id %>_yes" value="yes" required>
+                                                <label for="evaluation_<%= pregunta.id %>_yes" hidden>Sí</label>
+                                                <input class="<%= pregunta.importancia === 1 ? 'important' : '' %>"
+                                                    type="radio" name="evaluation_<%= pregunta.id %>"
+                                                    id="evaluation_<%= pregunta.id %>_no" value="no" required>
+                                                <label for="evaluation_<%= pregunta.id %>_no" hidden>No</label>
+                                            </div>
                                         </div>
-                                    </div>
                                     <% }) %>
-                                        <% }) %>
+                                </div>
+                                <% }) %>
                         </div>
-                        <button type="submit">Enviar</button>
+                        <div class="container__btn">
+                            <button type="submit">Enviar</button>
+                            <button type="reset">Borrar Formulario</button>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -134,13 +145,13 @@
                     <h2>
                         <%= client[0].nombre %>
                     </h2>
-                    <span style="margin-top: 20px;"><%= new Date(listRating[0].fecha_respondida).toLocaleString() %></span>
+                    
 
                 </div>
 
                 <div class="body_rating">
                     <p id="parrafRating">a</p>
-                    <div class="container__btn">
+                    <div class="container__btn__rating">
                         <button type="button" id="btnCrearPdf">
                             Descargar PDF
                         </button>
@@ -150,26 +161,32 @@
                     </div>
                 </div>
 
-                <div class="body__check">
+                <div class="body__check" style="margin-top: 2rem;">
                     <div class="title__body">
-                        <h2>ASPECTOS DE EVALUACIÓN</h2>
-                        <div>
-                            <span>Sí</span>
-                            <span>No</span>
+                        <div class="body__h">
+                            <h2>ASPECTOS DE EVALUACIÓN</h2>
+                        </div>
+                        <div class="infor__title__body">
+                            <span>Fecha: <span style="margin-top: 20px;"><%= new Date(listRating[0].fecha_respondida).toLocaleString() %></span></span>
+                            <div>
+                                <span>Sí</span>
+                                <span>No</span>
+                            </div>
                         </div>
                     </div>
-                    <div class="ask_enum">
+                    <div class="ask_enum" >
                         <% Object.entries(checkListData).forEach(([checklistNombre, checklistInfo]) => { %>
-                            <p style="margin: 20px 0;">
+                            <div class="content__wrapper__check">
+                            <p style="display: flex; width: 100%; margin: 20px 0; font-weight: 600;">
                                 <%= checklistNombre %>
                             </p>
                             <% checklistInfo.preguntas.forEach((pregunta) => { %>
-                                <div style="<%= pregunta.importancia === 1 ? 'background-color: #b8cce4;' : '' %>">
-                                    <p style="margin-bottom: 10px;">
-                                        <span>
+                                <div>
+                                    <p style="text-wrap: balance; margin: 20px 0; width: 100%; ">
+                                        <!-- <span>
                                             <%= pregunta.id %>.
-                                        </span>
-                                        <%= pregunta.pregunta %>
+                                        </span> -->
+                                        <span > <%= pregunta.pregunta %><%= pregunta.importancia === 1 ? '*' : '' %> </span>
                                     </p>
                                     <div>
                                         <input type="text" name="idPregunta" value="<%= pregunta.id %>" hidden>
@@ -183,7 +200,7 @@
                                             <input class="<%= pregunta.importancia === 1 ? 'important' : '' %>"
                                                 type="radio" name="evaluation_<%= pregunta.id %>"
                                                 id="evaluation_<%= pregunta.id %>_no"
-                                                value="no" <%= respuesta.respuesta === 0 ? 'checked' : '' %> disabled>
+                                                value=" no" <%= respuesta.respuesta === 0 ? 'checked' : '' %> disabled>
                                             <label for="evaluation_<%= pregunta.id %>_no" hidden>No</label>
                                         <% } else { %>
                                             <!-- Si no hay respuesta, mostrar inputs deshabilitados -->
@@ -200,7 +217,8 @@
                                         <% } %>
                                     </div>
                                 </div>
-                            <% }) %>
+                                <% }) %>
+                            </div>
                         <% }) %>
                     </div>
                     

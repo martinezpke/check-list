@@ -10,6 +10,7 @@
 </head>
 
 <body>
+    
     <section class="header__check__list">
         <div class="wrapper__header__check">
             <div class="content__header__check">
@@ -30,28 +31,42 @@
                 <form class="form-group" action="/clienteCreate" method="post" enctype="multipart/form-data"
                     onsubmit="return validarFormulario()">
                     <input type="number" name="id" id="id" value="<%= user.id %>" hidden>
-                    <div>
-                        <label for="nombre">Nombre:</label>
-                        <input type="text" name="nombre" id="nombre" />
-                    </div>
-                    <div>
-                        <label for="email">Correo electrónico:</label>
-                        <input type="email" name="email" id="email" />
-                    </div>
-                    <div>
-                        <label for="nit">NIT:</label>
-                        <input type="number" name="nit" id="nit" />
-                    </div>
-                    <div>
-                        <label for="cel">Número de celular:</label>
-                        <input type="tel" name="cel" id="cel" />
+
+                    <div class="form__group field">
+                        <input type="input" class="form__field" placeholder="Nombre" name="nombre" id='nombre' required />
+                        <label for="name" class="form__label">Nombre</label>
                     </div>
 
-                    <div>
+                    <div class="form__group field">
+                        <input type="email" class="form__field" placeholder="Email" name="email" id='email'  />
+                        <label for="email" class="form__label">Correo electrónico</label>
+                    </div>
+
+                    <div class="form__group field">
+                        <input type="number" class="form__field" placeholder="NIT" name="nit" id='nit'  />
+                        <label for="nit" class="form__label">NIT</label>
+                    </div>
+                    
+                    <div class="form__group field">
+                        <input type="tel" class="form__field" placeholder="cel" name="cel" id='cel'  />
+                        <label for="cel" class="form__label">Número de celular</label>
+                    </div>
+
+                    <button class="contenedor-btn-file">
+                        <div class="content__input__file">
+                            <i class='bx bxs-file-image'></i>
+                            Adjuntar archivo
+                            <label for="fileLogo"></label>
+                            <input type="file" name="fileLogo" id="fileLogo" accept="image/*" required onchange="mostrarImagen()">
+                        </div>
+                        <img id="imagenPrevista" src="" alt="">
+                    </button>
+
+                    <!-- <div>
                         <input type="file" name="fileLogo" id="fileLogo" accept="image/*" required />
-                    </div>
+                    </div> -->
 
-                    <div class="selected-options">
+                    <div class="selected-options" id="selectOptions">
                         <!-- <div class="option" id="option-1" style="display: none;">
                             Inspección salida de vehículos y liquidación en la caja, Glp en tránsito autorizado por operaciones.
                             <span class="close" onclick="removeOption('option-1')">x</span>
@@ -71,8 +86,8 @@
                                         <%= check.nombre %>
                                     </label>
                                 </div>
-                                <% }); %>
-                                    <% } %>
+                            <% }); %>
+                        <% } %>
 
                     </div>
 
@@ -83,14 +98,14 @@
             </div>
 
             <div id="formCheck" class="wrapper__check">
-                <h1>Agrega un nuevo Check</h1>
-        
                 <span class="close-form_chekc" onclick="cerrarCheck()">×</span>
                 <form action="/themeCreate" method="post">
-                    <div>
-                        <label for="name">Titulo del tema</label>
-                        <input type="text" name="name" id="name" placeholder="Tema">
+                    
+                    <div class="form__group field">
+                        <input type="input" class="form__field" placeholder="Tema" name="name" id='name' required />
+                        <label for="name" class="form__label">Titulo del tema</label>
                     </div>
+                    
                     <div>
                         <div>
                             <label for="cadenasPreguntas">Pregunta</label>
@@ -152,6 +167,25 @@
         </div>
 
     </section>
+
+
+    <script>
+        function mostrarImagen() {
+            const fileInput = document.getElementById('fileLogo');
+            const previewImage = document.getElementById('imagenPrevista');
+            
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+        
+            reader.onload = function(e) {
+                previewImage.style.display = 'block'
+                previewImage.src = e.target.result;
+            }
+        
+            reader.readAsDataURL(file);
+        }
+        
+    </script>
 
     <script>
         function validarFormulario() {
@@ -244,6 +278,7 @@
         }
 
         function updateSelectedChecklists(checkbox) {
+            var che = document.getElementById("selectOptions")
             var selectedChecklists = document.getElementById("selectedChecklists");
 
             var optionId = "option-" + checkbox.value;
@@ -254,7 +289,8 @@
                     option.className = "option";
                     option.id = optionId;
                     option.innerHTML = `<p>${checkbox.nextElementSibling.textContent}</p>` + '<span class="close" onclick="removeOption(\'' + optionId + '\')">x</span>';
-                    selectedChecklists.parentNode.insertBefore(option, selectedChecklists);
+                    /*che.parentNode.insertBefore(option, selectedChecklists);*/
+                    che.appendChild(option)
                 }
                 option.style.display = "inline-block";
             } else {
