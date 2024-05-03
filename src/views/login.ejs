@@ -10,48 +10,36 @@
 </head>
 
 <body>
-  <!-- <header>
-        <div class="content">
-          <div class="menuCon container">
-            <img src="https://static.platzi.com/media/uploads/thumbnail_logo_platzi_ng_877f62a9f1.png" alt="Logo Demar" />
-            <input type="checkbox" id="menu">
-            <label for="menu" id="btn-menu">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                stroke="currentColor" class="w-6 h-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-              </svg>
-            </label>
-            <nav class="navMenu">
-              <ul>
-                <li><a href="/">Inicio</a></li>
-                <li><a href="#">Cursos</a></li>
-                <li><a href="#">Contactanos</a></li>
-                <li><a href="/sign-up" id="signUp">Crear Cuenta</a></li>
-                <li><a href="/sign-in" id="singIn">Iniciar Sesion</a></li>
-              </ul>
-            </nav>
-          </div>
-        </div>
-      </header> -->
-
   <main>
-      <% if (msg) { %>
-        <p><%= msg %></p>
+    <% if (msg) { %>
+      <p>
+        <%= msg %>
+      </p>
       <% } %>
+      <div class="logo__interprice">
+        <img src="/imgs/LOGO SAC & C-02.png" alt="">
+      </div>
+        <form class="sign" method="post" action="/sign-in">
+          <!-- <h2>Inicio de sesion</h2> -->
+          <!-- <label for="username" hidden>Usuario</label> -->
+          <!-- <input type="text" id="username" name="username" placeholder="Usuario" required> -->
+          <div class="form__group field">
+            <input type="input" class="form__field" placeholder="Usuario" name="username" id='username'
+                required />
+            <label for="username" class="form__label">Usuario</label>
+          </div>
+          <div class="form__group field">
+            <input type="password" class="form__field" placeholder="Contraseña" name="password" id='password'
+                required />
+            <label for="password" class="form__label">Contraseña</label>
+          </div>
 
-      <form class="sign" method="post" action="/sign-in">
-        <label for="username">Usuario:</label>
-        <input type="text" id="username" name="username" required>
+          <!-- <label for="password" hidden>Contraseña</label> -->
+          <!-- <input type="password" id="password" name="password" placeholder="Contraseña" required> -->
 
-        <label for="password">Contraseña:</label>
-        <input type="password" id="password" name="password" required>
-
-        <button type="submit">Iniciar Sesión</button>
-      </form>
+          <button type="submit">Iniciar Sesión</button>
+        </form>
   </main>
 </body>
-
-<!-- <li><a href="#" id="signUp"></a>Crear Cuenta</li>
-<li><a href="#" id="singIn"></a>Iniciar Sesion</li> -->
 
 </html>

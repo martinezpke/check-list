@@ -12,24 +12,38 @@ import { getCliente } from '../controllers/getCliente.js';
 import { getAsk } from '../controllers/getAsk.js';
 import { getAllCheckList } from '../controllers/getAllCheckList.js';
 import { setRating } from '../controllers/setRating.js';
+import logout from '../controllers/logout.js';
 
 router.get('/sign-in', (req, res) => {
-    res.render('login', { msg: null });
-})
+    const token = req.cookies.token;
+
+    if (token) {
+        res.redirect('/config');
+    } else {
+        res.render('login', { msg: null });
+    }
+});
+
+
 
 router.get('/sign-up', (req, res) => {
-    res.render('register');
+    const token = req.cookies.token;
+
+    if (token) {
+        res.redirect('/config');
+    } else {
+        res.render('register');
+    }
 })
 
 router.get('/checklist/:id', verifyToken, async (req, res) => {
     const id = req.params.id
     const asks = await getAsk(id)
-    console.log(asks.client)
     const idCliente = req.query.idCliente || null;
+    const responsable = req.query.responsable || null;
     const listRating = req.query.respuestas ? JSON.parse(req.query.respuestas) : null;
-    console.log(listRating)
 
-    res.render('checkList', { checkListData: asks.check, client: asks.client, rating: idCliente, listRating: listRating });
+    res.render('checkList', { checkListData: asks.check, client: asks.client, rating: idCliente, listRating: listRating, responsable: responsable });
 })
 
 router.get('/config', verifyToken, async (req, res) => {
@@ -48,8 +62,9 @@ router.get('/config', verifyToken, async (req, res) => {
 
 router.post('/sign-in', signIn)
 router.post('/sign-up', signUp)
-router.post('/rating/:id', setRating)
-router.post('/themeCreate', controllerCreateTheme)
+router.post('/rating/:id',verifyToken, setRating)
+router.post('/themeCreate', verifyToken, controllerCreateTheme)
+router.get('/logout', verifyToken, logout)
 
 
 function cleanOriginalName(originalname) {
@@ -71,12 +86,9 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 
-router.post('/clienteCreate', upload.fields([
+router.post('/clienteCreate', verifyToken, upload.fields([
     { name: 'fileLogo', maxCount: 1 }
 ]), controllersClientCreate);
-
-
-
 
 
 export default router;

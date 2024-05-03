@@ -4,13 +4,35 @@
     padding: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+@media screen and (max-width: 768px) {
+    .header__check__list {
+        margin: 0px !important;
+        padding-top: 0px !important;
+    }
+}
 
-body {
+/* body {
+    background: rgb(49, 209, 191);
+    background: linear-gradient(169deg, rgba(49, 209, 191, 1) 38%, rgba(64, 137, 232, 1) 71%);
+    background-size: 600% 600%; 
+    animation: gradientAnimation 10s infinite; 
+} */
 
+@keyframes gradientAnimation {
+    0% {
+        background-position: 0% 50%; /* Define la posición inicial del fondo */
+    }
+    50% {
+        background-position: 100% 50%; /* Define la posición a la mitad del recorrido */
+    }
+    100% {
+        background-position: 0% 50%; /* Define la posición final del fondo */
+    }
 }
 
 .header__check__list {
-    padding-top: 10px;
+/*     padding-top: 10px; */
+overflow: hidden;
     max-width: 600px;
     
     margin: 50px auto;
@@ -31,6 +53,7 @@ body {
 }
 
 .header__check__list .content__header__check {
+    background-color: #4089E8;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -46,7 +69,8 @@ body {
 
 .header__check__list .info__user__check span {
     font-size: 20px;
-    font-weight: 400;
+    font-weight: 600;
+    color: #FFF;
 }
 
 .header__check__list .content__header__check i {
@@ -54,6 +78,7 @@ body {
     font-size: 25px;
     font-weight: 400;
     background-color: transparent;
+    color: #FFF;
     
 }
 
@@ -98,7 +123,7 @@ body {
 }
 
 .wrapper__option__check .select__option a { 
-    gap: 15px;
+    gap: 10px;
     cursor: pointer;
     font-size: 20px;
     display: flex;
@@ -109,6 +134,10 @@ body {
     height: 150px;
     border-radius: 10px;
     border: 1px solid #eee;
+}
+
+.wrapper__option__check .select__option a img {
+    width: 80px;
 }
 
 .wrapper__option__check .select__option a i {
@@ -139,6 +168,7 @@ body {
 }
 
 .wrapper__body__check .list__check .column__check i {
+    color: #4089E8;
     font-size: 20px;
 }
 
@@ -146,6 +176,10 @@ body {
     width: 100px;
     display: flex;
     justify-content: center;
+}
+
+.wrapper__body__check .list__check .column__check div a {
+    color: #30D6BC;
 }
 
 .wrapper__body__check .list__check .column__check {
@@ -158,7 +192,7 @@ body {
 }
 
 .wrapper__body__check .list__check .column__check:hover {
-    background-color: #eee;
+    background-color: #4089e838;
 }
 
 
@@ -225,7 +259,7 @@ tbody tr:hover {
   padding-bottom: 6px;  
   font-weight: 700;
   border-width: 3px;
-  border-image: linear-gradient(to right, #000,#eee);
+  border-image: linear-gradient(to right, #30D6BC, #4089E8);
   border-image-slice: 1;
 }
 
@@ -344,7 +378,7 @@ tbody tr:hover {
 
 .registre__client button {
     padding: 15px 30px;
-    background-color: #007bff;
+    background-color: #30D6BC;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -428,7 +462,7 @@ tbody tr:hover {
 
 .wrapper__check button {
     padding: 15px 30px;
-    background-color: #007bff;
+    background-color: #30D6BC;
     color: #fff;
     border: none;
     border-radius: 5px;

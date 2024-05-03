@@ -9,9 +9,10 @@ export const setRating = async (req, res) => {
   try {
     const resultRating = await setRtAw(data)
     if (resultRating.success) {
+      console.log("Nombre: "+data.responsable)
       const idCliente = await getIdRating(resultRating.id)
       const listRating = await getAllRatingId(id, idCliente.result[0].id)
-      const queryString = `?idCliente=${idCliente.result[0].result}&respuestas=${JSON.stringify(listRating.result)}`
+      const queryString = `?idCliente=${idCliente.result[0].result}&respuestas=${JSON.stringify(listRating.result)}&responsable=${data.responsable}`
       res.redirect(`/checklist/${id}${queryString}`)
     }
   } catch (error) {

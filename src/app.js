@@ -20,6 +20,8 @@ app.use(express.static('public'));
 // Middlewares
 app.use(express.urlencoded({ extended: true }));
 
+
+
 // Ajustes
 app.set('port', env.PORT);
 
@@ -29,6 +31,17 @@ app.use(router);
 // Ajustes
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
+// Middleware para manejar errores 404
+app.use((req, res, next) => {
+    res.status(404).redirect('/sign-in');
+  });
+  
+  // Manejador de errores
+  app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Error interno del servidor');
+  });
 
 app.listen(env.PORT, () => {
     console.log(`[Server] Server listening on ${env.HOST_API}`);

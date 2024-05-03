@@ -85,8 +85,17 @@
                             <div class="body__h">
                                 <h2>ASPECTOS DE EVALUACIÓN</h2>
                             </div>
+                            <div class="form__group field">
+                                <input type="text" class="form__field" placeholder="Responsable" name="responsable"
+                                    id='responsable' required />
+                                <label for="responsable" class="form__label">Responsable</label>
+                            </div>
                             <div class="infor__title__body">
-                                <span>Fecha: 30/04/2024</span>
+                                <!-- <span>Fecha: <span><%= new Date().toLocaleString() %></span></span> -->
+                                <span>Fecha: <span>
+                                        <%= new Date().toLocaleDateString() %>
+                                    </span></span>
+
                                 <div>
                                     <span>Sí</span>
                                     <span>No</span>
@@ -96,7 +105,8 @@
                         <div class="ask_enum">
                             <% Object.entries(checkListData).forEach(([checklistNombre, checklistInfo])=> { %>
                                 <div class="content__wrapper__check">
-                                    <p style="text-wrap: balance; display: flex; width: 100%; margin: 20px 0; font-weight: 600;">
+                                    <p
+                                        style="text-wrap: balance; display: flex; width: 100%; margin: 20px 0; font-weight: 600;">
                                         <%= checklistNombre %>
                                     </p>
                                     <% checklistInfo.preguntas.forEach((pregunta)=> { %>
@@ -105,8 +115,11 @@
                                                 <!-- <span>
                                                     <%= pregunta.id %>.
                                                 </span> -->
-                                                
-                                                <span > <%= pregunta.pregunta %><%= pregunta.importancia === 1 ? '*' : '' %> </span>
+
+                                                <span>
+                                                    <%= pregunta.pregunta %>
+                                                        <%= pregunta.importancia===1 ? '*' : '' %>
+                                                </span>
                                             </p>
                                             <div>
                                                 <input type="text" name="idPregunta" value="<%= pregunta.id %>" hidden>
@@ -120,7 +133,7 @@
                                                 <label for="evaluation_<%= pregunta.id %>_no" hidden>No</label>
                                             </div>
                                         </div>
-                                    <% }) %>
+                                        <% }) %>
                                 </div>
                                 <% }) %>
                         </div>
@@ -145,7 +158,7 @@
                     <h2>
                         <%= client[0].nombre %>
                     </h2>
-                    
+
 
                 </div>
 
@@ -166,69 +179,76 @@
                         <div class="body__h">
                             <h2>ASPECTOS DE EVALUACIÓN</h2>
                         </div>
+                        <div><span><b>Responsable:</b> <%= responsable %></span></div>
                         <div class="infor__title__body">
-                            <span>Fecha: <span style="margin-top: 20px;"><%= new Date(listRating[0].fecha_respondida).toLocaleString() %></span></span>
+                            <span><b>Fecha:</b> <span style="margin-top: 20px;">
+                                    <%= new Date(listRating[0].fecha_respondida).toLocaleString() %>
+                                </span></span>
                             <div>
                                 <span>Sí</span>
                                 <span>No</span>
                             </div>
                         </div>
                     </div>
-                    <div class="ask_enum" >
-                        <% Object.entries(checkListData).forEach(([checklistNombre, checklistInfo]) => { %>
+                    <div class="ask_enum">
+                        <% Object.entries(checkListData).forEach(([checklistNombre, checklistInfo])=> { %>
                             <div class="content__wrapper__check">
-                            <p style="display: flex; width: 100%; margin: 20px 0; font-weight: 600;">
-                                <%= checklistNombre %>
-                            </p>
-                            <% checklistInfo.preguntas.forEach((pregunta) => { %>
-                                <div>
-                                    <p style="text-wrap: balance; margin: 20px 0; width: 100%; ">
-                                        <!-- <span>
+                                <p style="display: flex; width: 100%; margin: 20px 0; font-weight: 600;">
+                                    <%= checklistNombre %>
+                                </p>
+                                <% checklistInfo.preguntas.forEach((pregunta)=> { %>
+                                    <div>
+                                        <p style="text-wrap: balance; margin: 20px 0; width: 100%; ">
+                                            <!-- <span>
                                             <%= pregunta.id %>.
                                         </span> -->
-                                        <span > <%= pregunta.pregunta %><%= pregunta.importancia === 1 ? '*' : '' %> </span>
-                                    </p>
-                                    <div>
-                                        <input type="text" name="idPregunta" value="<%= pregunta.id %>" hidden>
-                                        <% const respuesta = listRating.find(respuesta => respuesta.id_pregunta === pregunta.id); %>
-                                        <% if (respuesta) { %>
-                                            <input class="<%= pregunta.importancia === 1 ? 'important' : '' %>"
-                                                type="radio" name="evaluation_<%= pregunta.id %>"
-                                                id="evaluation_<%= pregunta.id %>_yes"
-                                                value="yes" <%= respuesta.respuesta === 1 ? 'checked' : '' %> disabled>
-                                            <label for="evaluation_<%= pregunta.id %>_yes" hidden>Sí</label>
-                                            <input class="<%= pregunta.importancia === 1 ? 'important' : '' %>"
-                                                type="radio" name="evaluation_<%= pregunta.id %>"
-                                                id="evaluation_<%= pregunta.id %>_no"
-                                                value=" no" <%= respuesta.respuesta === 0 ? 'checked' : '' %> disabled>
-                                            <label for="evaluation_<%= pregunta.id %>_no" hidden>No</label>
-                                        <% } else { %>
-                                            <!-- Si no hay respuesta, mostrar inputs deshabilitados -->
-                                            <input class="<%= pregunta.importancia === 1 ? 'important' : '' %>"
-                                                type="radio" name="evaluation_<%= pregunta.id %>"
-                                                id="evaluation_<%= pregunta.id %>_yes"
-                                                value="yes" disabled>
-                                            <label for="evaluation_<%= pregunta.id %>_yes" hidden>Sí</label>
-                                            <input class="<%= pregunta.importancia === 1 ? 'important' : '' %>"
-                                                type="radio" name="evaluation_<%= pregunta.id %>"
-                                                id="evaluation_<%= pregunta.id %>_no"
-                                                value="no" disabled>
-                                            <label for="evaluation_<%= pregunta.id %>_no" hidden>No</label>
-                                        <% } %>
+                                            <span>
+                                                <%= pregunta.pregunta %>
+                                                    <%= pregunta.importancia===1 ? '*' : '' %>
+                                            </span>
+                                        </p>
+                                        <div>
+                                            <input type="text" name="idPregunta" value="<%= pregunta.id %>" hidden>
+                                            <% const respuesta=listRating.find(respuesta=> respuesta.id_pregunta ===
+                                                pregunta.id); %>
+                                                <% if (respuesta) { %>
+                                                    <input class="<%= pregunta.importancia === 1 ? 'important' : '' %>"
+                                                        type="radio" name="evaluation_<%= pregunta.id %>"
+                                                        id="evaluation_<%= pregunta.id %>_yes" value="yes"
+                                                        <%=respuesta.respuesta===1 ? 'checked' : '' %> disabled>
+                                                    <label for="evaluation_<%= pregunta.id %>_yes" hidden>Sí</label>
+                                                    <input class="<%= pregunta.importancia === 1 ? 'important' : '' %>"
+                                                        type="radio" name="evaluation_<%= pregunta.id %>"
+                                                        id="evaluation_<%= pregunta.id %>_no" value=" no"
+                                                        <%=respuesta.respuesta===0 ? 'checked' : '' %> disabled>
+                                                    <label for="evaluation_<%= pregunta.id %>_no" hidden>No</label>
+                                                    <% } else { %>
+                                                        <!-- Si no hay respuesta, mostrar inputs deshabilitados -->
+                                                        <input
+                                                            class="<%= pregunta.importancia === 1 ? 'important' : '' %>"
+                                                            type="radio" name="evaluation_<%= pregunta.id %>"
+                                                            id="evaluation_<%= pregunta.id %>_yes" value="yes" disabled>
+                                                        <label for="evaluation_<%= pregunta.id %>_yes" hidden>Sí</label>
+                                                        <input
+                                                            class="<%= pregunta.importancia === 1 ? 'important' : '' %>"
+                                                            type="radio" name="evaluation_<%= pregunta.id %>"
+                                                            id="evaluation_<%= pregunta.id %>_no" value="no" disabled>
+                                                        <label for="evaluation_<%= pregunta.id %>_no" hidden>No</label>
+                                                        <% } %>
+                                        </div>
                                     </div>
-                                </div>
-                                <% }) %>
+                                    <% }) %>
                             </div>
-                        <% }) %>
+                            <% }) %>
                     </div>
-                    
+
                 </div>
             </div>
 
-            
+
 
             <% } %>
-            
+
 
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.1/html2pdf.bundle.min.js"></script>
 
@@ -382,7 +402,7 @@
                     });
                 </script>
 
-            
+
 </body>
 
 </html>

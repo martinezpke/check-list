@@ -4,7 +4,7 @@ import db from '../db/connection.js'
 const getIdRating = async ( id ) => {
     try {
         const [result] = await db.promise().query(
-            `SELECT * FROM check_list.rating WHERE id = ?`, [id]
+            `SELECT * FROM rating WHERE id = ?`, [id]
         )
 
         if (result) {

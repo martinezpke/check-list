@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    
+
     <section class="header__check__list">
         <div class="wrapper__header__check">
             <div class="content__header__check">
@@ -23,7 +23,8 @@
                             <%= user.apellido %>
                     </span>
                 </div>
-                <i class='bx bx-chevron-down'></i>
+                <!-- <i class='bx bx-chevron-down'></i> -->
+                <a href="/logout"><i class='bx bx-exit'></i></a>
             </div>
 
             <div class="registre__client" id="formularioRegistro">
@@ -33,22 +34,23 @@
                     <input type="number" name="id" id="id" value="<%= user.id %>" hidden>
 
                     <div class="form__group field">
-                        <input type="input" class="form__field" placeholder="Nombre" name="nombre" id='nombre' required />
+                        <input type="input" class="form__field" placeholder="Nombre" name="nombre" id='nombre'
+                            required />
                         <label for="name" class="form__label">Nombre</label>
                     </div>
 
                     <div class="form__group field">
-                        <input type="email" class="form__field" placeholder="Email" name="email" id='email'  />
+                        <input type="email" class="form__field" placeholder="Email" name="email" id='email' />
                         <label for="email" class="form__label">Correo electrónico</label>
                     </div>
 
                     <div class="form__group field">
-                        <input type="number" class="form__field" placeholder="NIT" name="nit" id='nit'  />
+                        <input type="number" class="form__field" placeholder="NIT" name="nit" id='nit' />
                         <label for="nit" class="form__label">NIT</label>
                     </div>
-                    
+
                     <div class="form__group field">
-                        <input type="tel" class="form__field" placeholder="cel" name="cel" id='cel'  />
+                        <input type="tel" class="form__field" placeholder="cel" name="cel" id='cel' />
                         <label for="cel" class="form__label">Número de celular</label>
                     </div>
 
@@ -57,7 +59,8 @@
                             <i class='bx bxs-file-image'></i>
                             Adjuntar archivo
                             <label for="fileLogo"></label>
-                            <input type="file" name="fileLogo" id="fileLogo" accept="image/*" required onchange="mostrarImagen()">
+                            <input type="file" name="fileLogo" id="fileLogo" accept="image/*" required
+                                onchange="mostrarImagen()">
                         </div>
                         <img id="imagenPrevista" src="" alt="">
                     </button>
@@ -86,8 +89,8 @@
                                         <%= check.nombre %>
                                     </label>
                                 </div>
-                            <% }); %>
-                        <% } %>
+                                <% }); %>
+                                    <% } %>
 
                     </div>
 
@@ -100,12 +103,12 @@
             <div id="formCheck" class="wrapper__check">
                 <span class="close-form_chekc" onclick="cerrarCheck()">×</span>
                 <form action="/themeCreate" method="post">
-                    
+
                     <div class="form__group field">
                         <input type="input" class="form__field" placeholder="Tema" name="name" id='name' required />
                         <label for="name" class="form__label">Titulo del tema</label>
                     </div>
-                    
+
                     <div>
                         <div>
                             <label for="cadenasPreguntas">Pregunta</label>
@@ -115,7 +118,7 @@
                         <textarea name="cadenasPreguntas" id="cadenasPreguntas" cols="30" rows="10"
                             placeholder="Preguntas"></textarea>
                     </div>
-        
+
                     <button type="submit">Registrar cliente</button>
                 </form>
             </div>
@@ -124,11 +127,13 @@
                 <h2>Crear cliente o check</h2>
                 <div class="select__option">
                     <a id="mostrarFormulario">
-                        <i class='bx bxs-user'></i>
+                        <!-- <i class='bx bxs-user'></i> -->
+                        <img src="/imgs/add_client.svg" alt="">
                         <span>Registrar Clientes</span>
                     </a>
                     <a id="createTheme">
-                        <i class='bx bx-spreadsheet'></i>
+                        <!-- <i class='bx bx-spreadsheet'></i> -->
+                        <img src="/imgs/add_check.svg" alt="">
                         <span>Agregar check</span>
                     </a>
                 </div>
@@ -159,8 +164,10 @@
                                             <button>Eliminar</button>
                                         </td> -->
                         </div>
-                        <% }); %>
-                            <% } %>
+                    <% }); %>
+                <% } else {%>
+                    <p>Sin cliente encontrado</p>
+                    <% } %>
                                 </tbody>
                                 </table>
             </div>
@@ -173,18 +180,18 @@
         function mostrarImagen() {
             const fileInput = document.getElementById('fileLogo');
             const previewImage = document.getElementById('imagenPrevista');
-            
+
             const file = fileInput.files[0];
             const reader = new FileReader();
-        
-            reader.onload = function(e) {
+
+            reader.onload = function (e) {
                 previewImage.style.display = 'block'
                 previewImage.src = e.target.result;
             }
-        
+
             reader.readAsDataURL(file);
         }
-        
+
     </script>
 
     <script>
@@ -310,4 +317,3 @@
 </body>
 
 </html>
-<!-- nombre, nit, direccion, contactos, correo -->
